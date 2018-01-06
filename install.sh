@@ -14,7 +14,9 @@
 # limitations under the License.
 
 # install openvswitch
+export LC_ALL="en_US.UTF-8"
 sudo apt-get update
+sudo apt-get install virtualenv python-dev python-pip build-essential
 sudo apt-get install -y openvswitch-switch
 
 # install Docker

@@ -9,6 +9,7 @@ install_requires = [
     'beautifultable==0.3.0',
     'logger==1.4',
     'flask==0.12.2',
+    'jsonschema==2.6.0',
     'mCli'
 ]
 dependency_links = [

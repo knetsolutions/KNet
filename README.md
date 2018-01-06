@@ -2,9 +2,54 @@
 Virtual Network Tobology builder
 
 KNet utilizes the Docker containers  openvswitch for building the SDN Test bed.
+It has inbuilt CLI interface, UI for Monitoring the topology.
 
 Supported on all Linux distributions.
 Tested on Ubuntu 14.04, 16.04
+
+
+## How to Install in on ubuntu 16.04:
+
+### Install the Prerequisties (docker,openvswitch,ovs-docker, ubuntu docker images)
+
+curl https://raw.githubusercontent.com/knetsolutions/KNet/master/install.sh | sh
+
+### Install the KNet 
+
+1.Create a virtual environment
+virtualenv knet
+. knet/bin/activate
+
+2.Install the KNet
+
+git clone https://github.com/knetsolutions/KNet
+cd KNet
+pip install --process-dependency-links .
+
+3.Test the Installation
+
+Open Two terminal, In one terminal run CLI, another terminal run Webserver
+
+To run cli:
+cd KNet
+python KNet/cli.py
+
+To run UI:
+python ui/webserver.py
+
+### Run the Sample Topology
+In the CLI.
+
+CreateTopology /home/suresh/KNet/examples/topo7.yaml 
+
+Access the UI:
+http://localhost:5000/index.html
+
+
+
+
+
+
 
 Installation - Ubuntu 16.04:
 ============================
