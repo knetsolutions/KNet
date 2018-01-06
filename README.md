@@ -1,126 +1,155 @@
 # KNet
-Virtual Network Tobology builder
 
-KNet utilizes the Docker containers  openvswitch for building the SDN Test bed.
-It has inbuilt CLI interface, UI for Monitoring the topology.
+KNet is a Virtual Network Tobology builder, Primarily used as SDN Test Environment.
 
-Supported on all Linux distributions.
-Tested on Ubuntu 14.04, 16.04
+KNet builds the Virtual Network Topology with Switches, Nodes, Links. KNet uses Dockers for building the Nodes, openvswitch for switches.
+
+KNet support QoS parameter configuration for the Links, such as bandwidth, latency, jitter and packetloss.
+
+KNet supports the CLI and Web Interface. 
 
 
-## How to Install in on ubuntu 16.04:
+## Getting Started
 
-### Install the Prerequisties (docker,openvswitch,ovs-docker, ubuntu docker images)
+KNet can be installed on any Linux distributions. But we have tested only Ubuntu 14.04 and 16.04.
 
+Minimum hardware configuration required is 4GB RAM, 2 Core processors. Higher configuration gives better result. 
+
+
+### Prerequisites
+
+The following script installs the prerequisites in Ubuntu system. 
+
+```
 curl https://raw.githubusercontent.com/knetsolutions/KNet/master/install.sh | sh
+```
 
-### Install the KNet 
+### Installing
 
-1.Create a virtual environment
+KNet is developed in Python 2.7. I suggest to install it in VirtualEnv as below. 
+
+**Create a Python Virtual environment**
+
+```
+export LC_ALL="en_US.UTF-8"
+cd $HOME
 virtualenv knet
 . knet/bin/activate
+```
 
-2.Install the KNet
+Example output
+```
+ubuntu@ubuntu:~$ export LC_ALL="en_US.UTF-8"
+ubuntu@ubuntu:~$ cd $HOME
+ubuntu@ubuntu:~$ virtualenv knet
+Running virtualenv with interpreter /usr/bin/python2
+New python executable in /home/ubuntu/knet/bin/python2
+Also creating executable in /home/ubuntu/knet/bin/python
+Installing setuptools, pkg_resources, pip, wheel...done.
+ubuntu@ubuntu:~$ . knet/bin/activate
+(knet) ubuntu@ubuntu:~$ 
 
+```
+
+**Installing KNet**
+Install the KNet in the virtual environment as below
+```
 git clone https://github.com/knetsolutions/KNet
 cd KNet
 pip install --process-dependency-links .
+```
 
-3.Test the Installation
-
-Open Two terminal, In one terminal run CLI, another terminal run Webserver
-
-To run cli:
-cd KNet
-python KNet/cli.py
-
-To run UI:
-python ui/webserver.py
-
-### Run the Sample Topology
-In the CLI.
-
-CreateTopology /home/suresh/KNet/examples/topo7.yaml 
-
-Access the UI:
-http://localhost:5000/index.html
-
-
-
-
+Example Output:
+```
+(knet) ubuntu@ubuntu:~$ git clone https://github.com/knetsolutions/KNet
+Cloning into 'KNet'...
+remote: Counting objects: 231, done.
+remote: Compressing objects: 100% (89/89), done.
+remote: Total 231 (delta 135), reused 226 (delta 133), pack-reused 0
+Receiving objects: 100% (231/231), 718.91 KiB | 409.00 KiB/s, done.
+Resolving deltas: 100% (135/135), done.
+Checking connectivity... done.
+(knet) ubuntu@ubuntu:~$ 
+(knet) ubuntu@ubuntu:~$ cd KNet/
+(knet) ubuntu@ubuntu:~/KNet$ pip install --process-dependency-links .
+Processing /home/ubuntu/KNet
+Collecting six==1.11.0 (from KNet==1.0)
+.....(output omitted)
+(knet) ubuntu@ubuntu:~/KNet$
+```
+Congrats... Installation Completed.
 
 
-
-Installation - Ubuntu 16.04:
-============================
-1) openvswitch installation:
-
-sudo apt-get update
-# ovs version 2.5.2 available in ubuntu repo
-sudo apt-get install openvswitch-switch
+## Five Things to Know Before you Use KNet.
 
 
-2) Docker installation:
-https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-using-the-repository
+**Topology**
+Topology consists of Nodes, Switches, Links, QoS, Network Objects. Nodes are build as Docker Containers. Switches are openvswitch switches. 
 
+**Topology input file**
 
-sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
+User should write Topology in YAML file. This Topology file will be input to the KNet for Topology Creation.
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo apt-key fingerprint 0EBFCD88
+Example Topology files(linear,ring,mesh,parial mesh, tree) are available in KNet\examples folder. 
 
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+**CLI**
+KNet comes with simple CLI (Command Line Interface). It supports the following commands
 
-sudo apt-get update
+```
+Help
+CreateTopology
+DeleteTopology
+GetTopology
+DeleteNode
+DeleteSwitch
+AdminDownLink
+AdminUpLink
+PingAll
+Ping
+Exit
+```
+To get the detailed help for a command
 
-sudo apt-get install docker-ce
+```
+Help CreateTopology
 
-3) pull ubuntu images from docker repository:
-sudo docker pull ubuntu:trusty
-sudo docker pull ubuntu:xenial
-sudo docker pull ubuntu
+```
 
+**UI (Web Interface)**
+KNet comes with Web Interface. Its used for Viewing the Topology. Configuration is NOT supported. This Web Interface displayes Topology in Graphical representation and reflects the topology changes. 
 
-4)
-install ovs-docker:
+**Node**
 
-wget https://raw.githubusercontent.com/openvswitch/ovs/master/utilities/ovs-docker
-chmod a+rwx ovs-docker
-sudo cp ovs-docker /usr/bin/.
+Nodes are build as Docker Containers. ubuntu image is used as default Node image. The default management interface is available for this Node. 
+Node is just a another real Ubuntu Machine. User can install any sofware (apache, mysql, traffic generator, etc) and use it.
 
+docker commands can be used to control the nodes.
 
-Install Ryu Controller:
-========================
-sudo apt-get install virtualenv python-dev python-pip build-essential
-export LC_ALL="en_US.UTF-8"
-virtualenv ryu
-. ryu/bin/activate
-pip install ryu
-ryu --version 
-4.20
+**Switch**
+Openvswitch is used for building switches.  openswitch commands can be used to debug the switches.
 
+## Testing
 
-Install Knet
-==============================
-virtualenv knet
-. knet/bin/activate
-#download knet packet
-pip install knet/.
+Todo
 
+## Built With
 
+* [Dockers](https://www.docker.com/) - The Docker Containers
+* [Openvswitch](http://openvswitch.github.io/) - Open vSwitch is a production quality, multilayer virtual switch 
+* [Next UI Toolkit](https://github.com/NeXt-UI/next-tutorials) - NeXt UI is a Javascript/CSS framework for rendering Network Topology
 
-How to Run:
+## Contributing
 
-CLI method:
+Todo.
 
+## Versioning
 
-programming method:
-python knet/main.py --input-file examples/topo3.yaml
+ For the versions available, see the [tags on this repository](https://github.com/knetsolutions/KNet/tags). 
 
+## Authors
+
+* **KNet Systems** 
+
+## License
+
+This project is licensed under the Apache License - see the [LICENSE.md](LICENSE.md) file for details
