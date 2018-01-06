@@ -15,12 +15,12 @@
 import logging
 
 
-def init_logging(fname="/tmp/knet.log", loglevel=logging.DEBUG):
+def init_logging(fname="/tmp/KNet.log", loglevel=logging.DEBUG):
     hdlr = logging.FileHandler(fname)
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(filename)s %(funcName)s %(message)s')
     hdlr.setFormatter(formatter)
     logger.addHandler(hdlr)
     logger.setLevel(logging.DEBUG)
 
-logger = logging.getLogger('knet')
+logger = logging.getLogger('KNet')
 init_logging()

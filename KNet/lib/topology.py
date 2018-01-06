@@ -22,17 +22,17 @@ import jsonschema
 from jsonschema import validate
 from shutil import copyfile
 
-from knet.lib.node import Node
-from knet.lib.switches import Switch
-from knet.lib.link import NodeLink, SwitchLink
-from knet.lib.networks import Network
-from knet.lib.qos import Qos
-import knet.lib.schema
-from knet.lib.utils import Singleton
-import knet.lib.utils as utils
-import knet.lib.ovs_cmds as ovs
-from knet.lib.logger import logger as log
-from knet.lib.schema import Topology_schema as schema
+from KNet.lib.node import Node
+from KNet.lib.switches import Switch
+from KNet.lib.link import NodeLink, SwitchLink
+from KNet.lib.networks import Network
+from KNet.lib.qos import Qos
+import KNet.lib.schema
+from KNet.lib.utils import Singleton
+import KNet.lib.utils as utils
+import KNet.lib.ovs_cmds as ovs
+from KNet.lib.logger import logger as log
+from KNet.lib.schema import Topology_schema as schema
 
 UI_DATAFILE = "ui/static/app/data.js"
 UI_DEFAULTDATAFILE = "ui/static/app/data_default.js"
@@ -238,9 +238,6 @@ class Topology(Singleton, object):
             hdr = "var topologyData ="
             outfile.write(hdr)
             json.dump(topologyData, outfile)
-
-
-
 
     def __validate(self, data):
         try:

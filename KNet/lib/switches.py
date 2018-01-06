@@ -16,8 +16,8 @@ from __future__ import unicode_literals
 import abc
 from six import add_metaclass, text_type
 import sys
-import knet.lib.utils as utils
-import knet.lib.ovs_cmds as ovs
+import KNet.lib.utils as utils
+import KNet.lib.ovs_cmds as ovs
 
 
 @add_metaclass(abc.ABCMeta)

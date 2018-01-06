@@ -20,7 +20,7 @@ import uuid
 import tinydb
 from tinydb import TinyDB, Query
 from beautifultable import BeautifulTable
-from knet.lib.logger import logger as log
+from KNet.lib.logger import logger as log
 
 
 # https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python

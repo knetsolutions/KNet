@@ -16,7 +16,7 @@ from __future__ import unicode_literals
 import abc
 from six import add_metaclass, text_type
 import sys
-import knet.lib.utils as utils
+import KNet.lib.utils as utils
 
 
 @add_metaclass(abc.ABCMeta)

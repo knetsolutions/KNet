@@ -13,7 +13,7 @@
    limitations under the License.
 '''
 import sys
-import knet.lib.utils as utils
+import KNet.lib.utils as utils
 
 
 '''
@@ -21,6 +21,8 @@ tc qdisc add dev veth1 root handle 1:0 netem delay #{@config.latency} @config.ji
 bandwidth
 tc qdisc add dev veth1 parent 1:1 handle 10: tbf rate  #{@config.bandwidth} buffer 1600 limit 3000
 '''
+
+
 def config_qos(tapif, qos):
     cmd = ['sudo', 'tc', 'qdisc', 'add', 'dev', tapif,
            'root', 'handle', '1:0', 'netem', 'delay',

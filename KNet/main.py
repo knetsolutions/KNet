@@ -19,30 +19,11 @@ import abc
 from six import add_metaclass, text_type
 import yaml
 import argparse
-from knet.lib.topology import Topology
-
-from flask import Flask, render_template
-from flask import jsonify
-
-
-# Rest Server
-app = Flask(__name__)
-
-
-@app.route('/', methods=['GET'])
-def topo():
-    author = "KNet Solutions"
-    name = "KNet"
-    return render_template('ui/index.html', author=author, name=name)
-
-
-def startweb():
-    app.run(host="0.0.0.0", port=5000, debug=True)
-
+from KNet.lib.topology import Topology
 
 # main application
 def main(argv):
-    parser = argparse.ArgumentParser("Knet Test app")
+    parser = argparse.ArgumentParser("KNet Test app")
     parser.add_argument("--input-file", required=True, help="Topology input file")
     args = parser.parse_args(argv[1:])
     with open(args.input_file) as fp:

@@ -8,11 +8,11 @@ install_requires = [
     'tinydb==3.7.0',
     'beautifultable==0.3.0',
     'logger==1.4',
-    'flask==0.12.2'
+    'flask==0.12.2',
     'mCli'
 ]
 dependency_links = [
-     "git+http://github.com/sureshkvl/mCli/tarball/master#egg=mCli"
+     "git+http://github.com/sureshkvl/mCli#egg=mCli-1.0"
     ]
 test_requires = []
 

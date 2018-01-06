@@ -13,7 +13,7 @@
    limitations under the License.
 '''
 import sys
-import knet.lib.utils as utils
+import KNet.lib.utils as utils
 
 
 def create_container(name, img):

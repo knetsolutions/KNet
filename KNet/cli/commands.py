@@ -14,7 +14,7 @@
 '''
 
 from mCli.commands.base import Command
-from knet.lib.topology import Topology
+from KNet.lib.topology import Topology
 import sys
 import yaml
 import traceback

@@ -16,8 +16,8 @@ from __future__ import unicode_literals
 import sys
 import abc
 from six import add_metaclass, text_type
-import knet.lib.utils as utils
-import knet.lib.docker_cmds as docker
+import KNet.lib.utils as utils
+import KNet.lib.docker_cmds as docker
 
 
 @add_metaclass(abc.ABCMeta)
@@ -30,7 +30,7 @@ class Node(object):
         self.status = "initialized"
         # DB Updation
         self.docid = utils.node_t.insert({'id': self.id, 'name': self.name,
-                                'img': self.img, 'status': self.status})
+                                          'img': self.img, 'status': self.status})
         # print self.docid
 
     def create(self):
@@ -47,5 +47,6 @@ class Node(object):
         # update the status in DB
         # utils.node_t.update({'status': self.status}, doc_ids=[self.docid])
         utils.node_t.remove(doc_ids=[self.docid])
+
     def get(self):
         return utils.node_t.get(doc_id=self.docid)
