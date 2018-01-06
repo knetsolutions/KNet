@@ -1,0 +1,329 @@
+'''Copyright 2018 KNet Solutions, India, http://knetsolutions.in
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+'''
+
+from __future__ import unicode_literals
+import sys
+import abc
+from six import add_metaclass, text_type
+import json
+import jsonschema
+from jsonschema import validate
+from shutil import copyfile
+
+from knet.lib.node import Node
+from knet.lib.switches import Switch
+from knet.lib.link import NodeLink, SwitchLink
+from knet.lib.networks import Network
+from knet.lib.qos import Qos
+import knet.lib.schema
+from knet.lib.utils import Singleton
+import knet.lib.utils as utils
+import knet.lib.ovs_cmds as ovs
+from knet.lib.logger import logger as log
+from knet.lib.schema import Topology_schema as schema
+
+UI_DATAFILE = "ui/static/app/data.js"
+UI_DEFAULTDATAFILE = "ui/static/app/data_default.js"
+
+
+@add_metaclass(abc.ABCMeta)
+class Topology(Singleton, object):
+
+    def __init__(self):
+        self.initialize()
+
+    def initialize(self):
+        self.name = None
+        self.status = None
+        self.controller = None
+        self.nodeobjs = []
+        self.switchobjs = []
+        self.linkobjs = []
+        self.networkobjs = []
+        self.qos = None
+        log.debug("Initializing Topology Object")
+
+    def create(self, tdata):
+        log.debug("Topology Create called with Data" + str(tdata))
+        if self.status:
+            res = "Already Topology is running, we cannot create another one"
+            log.warn(res)
+            return res
+
+        if not self.__validate(tdata):
+            log.error("Topology data schmea validation check failed")
+            return {"Error": "Invalid Topology Schema Check Data"}
+
+        # create network
+        self.name = tdata["Topology"]["name"]
+        self.controller = tdata["Topology"]["controller"]["url"]
+
+        log.debug("Topology Creating Networks")
+        for net in tdata["Topology"]["networks"]:
+            networkobj = Network(net)
+            self.networkobjs.append(networkobj)
+
+        # qos - doesnt require objects. we need to just pass this
+        # complete dict to Linkobj.
+        if "qos" in tdata["Topology"]:
+            self.qos = tdata["Topology"]["qos"]
+
+        # create nodes
+        log.debug("Topology Creating Nodes")
+        for n in tdata["Topology"]["nodes"]:
+            nodeobj = Node(n)
+            nodeobj.create()
+            self.nodeobjs.append(nodeobj)
+
+        # Create switches
+        log.debug("Topology Creating Switches")
+        for s in tdata["Topology"]["switches"]:
+            sobj = Switch(data=s, controller=self.controller)
+            sobj.create()
+            self.switchobjs.append(sobj)
+
+        # create links
+        log.debug("Topology Creating Links")
+        for l in tdata["Topology"]["links"]:
+            # creating nodeLinks
+            if "nodes" in l:
+                lobj = NodeLink(network=self.__getnetwork(l["network"]),
+                                data=l, qos=self.qos)
+            else:
+                # creating Switch Links
+                lobj = SwitchLink(data=l)
+            lobj.create()
+            self.linkobjs.append(lobj)
+
+        self.status = "Created"
+
+        log.debug("Topology Creation Completed")
+
+        # Todo - Store Network, Qos in DB??
+
+        # write the topology data for UI
+        self.__write_ui_data()
+        log.debug("Topology details updated in data.js for UI")
+
+        # return the topology data(for CLI)
+        res = utils.format_createtopo({"Name": self.name,
+                                       "Status": self.status,
+                                       "Controller": self.controller,
+                                       "Nodes": self.__getNodeNames(),
+                                       "Switches": self.__getSwitchNames(),
+                                       "Links": self.__getLinks()})
+        log.debug(res)
+        return res
+
+    def delete(self):
+        if not self.status:
+            log.warn("No Topology Exists for delete")
+            return "No Topology Exists "
+
+        log.debug("Deleting nodes")
+        for n in self.nodeobjs:
+            n.delete()
+        del self.nodeobjs[:]
+
+        log.debug("Deleting switches")
+        for s in self.switchobjs:
+            s.delete()
+        del self.switchobjs[:]
+
+        log.debug("Deleting Links")
+        del self.linkobjs[:]
+
+        log.debug("Deleting Networks")
+        del self.networkobjs[:]
+
+        log.debug("Cleaning DB")
+        utils.purge_db()
+        # reinitializing the instance variable
+        self.initialize()
+        # resetting the id generator(start from 0)
+        utils.reset_id()
+        # removing the UI data file
+        self.__delete_ui_data()
+        res = "****--------- Topology Deleted---------****"
+        log.debug(res)
+        return res
+
+    def get(self):
+        if not self.status:
+            log.warn("No Topology Exists")
+            return "No Topology Exists "
+
+        topo = utils.format_topo({"Name": self.name,
+                                  "Status": self.status,
+                                  "Controller": self.controller})
+        nodes = utils.format_nodes(self.__getNodeDetails())
+        switches = utils.format_switches(self.__getSwitchDetails())
+        links = utils.format_links(utils.link_t.all())
+        result = "Topology \n" + str(topo) + "\n"
+        result += "Nodes \n" + str(nodes) + "\n"
+        result += "Switches \n" + str(switches) + "\n"
+        result += "Links \n" + str(links) + "\n"
+        log.debug(result)
+        return result
+
+    def deleteNode(self, name):
+        obj = self.__getNodebyName(name)
+        if obj:
+            obj.delete()
+            return "Node deleted"
+        else:
+            return "Node not found"
+
+    def deleteSwitch(self, name):
+        obj = self.__getSwitchbyName(name)
+        if obj:
+            obj.delete()
+            return "Switch deleted"
+        else:
+            return "Switch not found"
+
+    # hack - short way - to be handled by node module
+    def adminDownLink(self, ifname):
+        ovs.admindown_link(ifname)
+
+    def adminUpLink(self, ifname):
+        ovs.adminup_link(ifname)
+
+    def ping(self, src, dst):
+        return "Command Not yet implemented"
+
+    def pingall(self, src, dst):
+        return "Command Not yet implemented"
+
+    # private functions
+    def __write_ui_data(self):
+        topologyData = {}
+        nodes = []
+        links = []
+
+        for node in self.nodeobjs:
+            nodes.append({"id": node.id, "name": node.name, "icon": "host"})
+        for switch in self.switchobjs:
+            nodes.append({"id": switch.id, "name": switch.name, "icon": "switch"})
+        for linkobj in self.linkobjs:
+            for link in linkobj.links:
+                links.append(link)
+        topologyData["nodes"] = nodes
+        topologyData["links"] = links
+        # print topologyData
+        with open(UI_DATAFILE, 'w') as outfile:
+            hdr = "var topologyData ="
+            outfile.write(hdr)
+            json.dump(topologyData, outfile)
+
+    def __delete_ui_data(self):
+        topologyData = {}
+        nodes = []
+        links = []
+        topologyData["nodes"] = nodes
+        topologyData["links"] = links
+        with open(UI_DATAFILE, 'w') as outfile:
+            hdr = "var topologyData ="
+            outfile.write(hdr)
+            json.dump(topologyData, outfile)
+
+
+
+
+    def __validate(self, data):
+        try:
+            validate(data, schema)
+        except jsonschema.ValidationError as e:
+            log.error("json schema validation error %s", e.message)
+            return False
+        except jsonschema.SchemaError as e:
+            log.error("json schema error %s", e.message)
+            return False
+        return True
+
+    def __getnetwork(self, netname):
+        for net in self.networkobjs:
+            if net.name == netname:
+                return net
+        return None
+
+    def __getqos(self, qosname):
+        for qos in self.qosobjs:
+            if qos.name == qosname:
+                return qos
+        return None
+
+    def __getNodebyName(self, nodename):
+        for node in self.nodeobjs:
+            if node.name == nodename:
+                return node
+        return None
+
+    def __getSwitchbyName(self, swname):
+        for sw in self.switchobjs:
+            if sw.name == swname:
+                return sw
+        return None
+
+    # functions for collecting the Data for CLI dsplay
+
+    def __getNodeNames(self):
+        return [node.name for node in self.nodeobjs]
+
+    def __getSwitchNames(self):
+        return [sw.name for sw in self.switchobjs]
+
+    def __getLinks(self):
+        results = []
+        for linkobj in self.linkobjs:
+            for link in linkobj.links:
+                results.append(link["source-name"] + "->" +
+                               link["target-name"])
+        return results
+
+    def __getNodeDetails(self):
+        result = []
+        for node in self.nodeobjs:
+            result.append({"name": node.name,
+                           "status": node.status,
+                           "id": node.id,
+                           "image": node.img
+                           })
+
+        return result
+
+    def __getSwitchDetails(self):
+        result = []
+        for sw in self.switchobjs:
+            result.append({"name": sw.name,
+                           "status": sw.status,
+                           "id": sw.id,
+                           "version": sw.version,
+                           "controller": sw.controller
+                           })
+        return result
+
+    def __getLinkDetails(self):
+        result = []
+        # read from DB. link objects doesnt stores in switch perspective
+        links = utils.link_t.all()
+        for link in links:
+            result.append({"name": sw.name,
+                           "status": sw.status,
+                           "id": sw.id,
+                           "version": sw.version,
+                           "controller": sw.controller
+                           })
+        return result
