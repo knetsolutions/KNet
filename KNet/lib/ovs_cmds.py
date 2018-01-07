@@ -40,7 +40,25 @@ def set_controller(name, controller):
 
 
 def dpid(id):
-    return "000000000000000" + str(id)
+    # id is a number, which can be 0 to 16 digits
+    # This function return 16digit string , prepends 0 in the id.
+    temp = id
+    Totalsize = 16
+
+    # identify the number of digits
+    digit = 1
+    while (temp > 9):
+        temp = temp / 10
+        digit = digit+1
+
+    prepend = ''
+    prependbits = 16 - digit
+    while (prependbits > 0):
+        prepend += '0'
+        prependbits -= 1
+
+    r = prepend + str(id)
+    return r
 
 
 def set_datapath_id(name, id):

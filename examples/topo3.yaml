@@ -1,11 +1,13 @@
 Topology:
     name : Simple Topology with QoS
-    schema_version: 1.0
+    version: 1.0
     description: |
       This topology consists of 4 nodes, and a switch. 
       All Nodes are connected to a same switch. Qos is configured
     controller:
       url: tcp:0.0.0.0:6633
+    openflow:
+      version: 1.3
     nodes:
       -
         name: a1
@@ -22,7 +24,6 @@ Topology:
     switches:
       -
         name: switch1
-        ofversion: 1.3
     links:
       -
         switches:

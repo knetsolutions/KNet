@@ -1,6 +1,6 @@
 Topology:
     name : Tree Topology
-    schema_version: 1.0
+    version: 1.0
     description: |
       This topology consists of 8 nodes, and 7 switches. This topology
       forms a binary tree with depth 3. Root Switch is S1. Second level
@@ -8,6 +8,8 @@ Topology:
       Nodes are connected to switches S3, S4, S6  and S7.
     controller:
       url: tcp:0.0.0.0:6633
+    openflow:
+      version: 1.3      
     nodes:
       -
         name: a1
@@ -36,25 +38,18 @@ Topology:
     switches:
       -
         name: S1
-        ofversion: 1.3
       -
         name: S2
-        ofversion: 1.3
       -
         name: S3
-        ofversion: 1.3
       -
         name: S4
-        ofversion: 1.3      
       -
         name: S5
-        ofversion: 1.3
       -
         name: S6
-        ofversion: 1.3     
       -
         name: S7
-        ofversion: 1.3
     links:
       -
         switches:
@@ -116,7 +111,6 @@ Topology:
          switches:
           - S5
           - S7
-
     networks:
       -
         name: n1

@@ -26,13 +26,18 @@ class Switch(object):
     def __init__(self, data, controller):
         self.id = utils.generate_id()
         self.name = data["name"]
-        self.version = str(data["ofversion"])
+        self.version = str(data["openflow"]["version"])
         self.controller = controller
         self.status = "initialized"
+        if "datapathid" in data:
+            self.datapathid = int(data["datapathid"])
+        else:
+            self.datapathid = int(self.id)
         # Insert the switch details in to DB
         self.docid = utils.switch_t.insert({'id': self.id, 'name': self.name,
                                             'ofversion': self.version,
                                             'controller': self.controller,
+                                            'datapathid': self.datapathid,
                                             'status': self.status})
 
     def create(self):
@@ -42,7 +47,7 @@ class Switch(object):
         ovs.create_bridge(self.name)
         ovs.set_controller(self.name, self.controller)
         ovs.set_protocol_version(self.name, self.version)
-        ovs.set_datapath_id(self.name, self.id)
+        ovs.set_datapath_id(self.name, self.datapathid)
         # Update theDB
         self.status = "created"
         utils.switch_t.update({'status': self.status}, doc_ids=[self.docid])

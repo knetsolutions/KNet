@@ -1,12 +1,14 @@
 Topology:
     name : Ring Topology
-    schema_version: 1.0
+    version: 1.0
     description: |
       This topology consists of 4 nodes, and four switches. 
       Each node is connected in each switch. Also these switches are
       connected linearly with loop.
     controller:
       url: tcp:0.0.0.0:6633
+    openflow:
+      version: 1.3      
     nodes:
       -
         name: a1
@@ -23,16 +25,12 @@ Topology:
     switches:
       -
         name: switch1
-        ofversion: 1.3
       -
         name: switch2
-        ofversion: 1.3
       -
         name: switch3
-        ofversion: 1.3
       -
         name: switch4
-        ofversion: 1.3      
     links:
       -
         switches:

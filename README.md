@@ -52,6 +52,7 @@ ubuntu@ubuntu:~$ . knet/bin/activate
 ```
 
 **Installing KNet**
+
 Install the KNet in the virtual environment as below
 ```
 git clone https://github.com/knetsolutions/KNet

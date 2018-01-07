@@ -90,6 +90,9 @@ class Topology(Singleton, object):
         # Create switches
         log.debug("Topology Creating Switches")
         for s in tdata["Topology"]["switches"]:
+            # Take details from global openflow json
+            if "openflow" not in s:
+                s["openflow"] = tdata["Topology"]["openflow"]
             sobj = Switch(data=s, controller=self.controller)
             sobj.create()
             self.switchobjs.append(sobj)
