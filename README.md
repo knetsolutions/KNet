@@ -80,19 +80,21 @@ Collecting six==1.11.0 (from KNet==1.0)
 Congrats... Installation Completed.
 
 
-## Five Things to Know Before you Use KNet.
+## Few Things to know about KNet.
 
 
 **Topology**
+
 Topology consists of Nodes, Switches, Links, QoS, Network Objects. Nodes are build as Docker Containers. Switches are openvswitch switches. 
 
 **Topology input file**
 
 User should write Topology in YAML file. This Topology file will be input to the KNet for Topology Creation.
 
-Example Topology files(linear,ring,mesh,parial mesh, tree) are available in KNet\examples folder. 
+Example Topology files(linear,ring,mesh,parial mesh, tree) are available in examples folder. 
 
 **CLI**
+
 KNet comes with simple CLI (Command Line Interface). It supports the following commands
 
 ```
@@ -116,6 +118,7 @@ Help CreateTopology
 ```
 
 **UI (Web Interface)**
+
 KNet comes with Web Interface. Its used for Viewing the Topology. Configuration is NOT supported. This Web Interface displayes Topology in Graphical representation and reflects the topology changes. 
 
 **Node**
@@ -126,11 +129,72 @@ Node is just a another real Ubuntu Machine. User can install any sofware (apache
 docker commands can be used to control the nodes.
 
 **Switch**
+
 Openvswitch is used for building switches.  openswitch commands can be used to debug the switches.
+
+**Cleanup Script**
+
+Cleanup script is included in the repo(cleanup.sh).
+
+Suppose, you created topology and exit the cli without deleted  the topology. The Topology footprints (docker containers, switches) exists in the system. So next time , topology creation may fail. 
+
+Its best practice before you start the KNet application, runs the cleanup script. It cleans all the docker nodes,openvswitches  exists in your system.
 
 ## Testing
 
-Todo
+**Start the SDN Controller**
+ryu-manager --verbose apps/simple_switch_13.py
+
+
+**Start the KNet UI**
+Run in the VirtualEnvironment,
+```
+cd $HOME/KNet
+python ui/webserver.py >/dev/null 2>&1 &
+```
+
+Open the Browser with below URL to see the topology diagram
+```
+http://localhost:5000/index.html
+```
+Run in the VirtualEnvironment,
+
+**Start the KNet CLI**
+
+1. Start the CLI
+```
+cd $HOME/KNet
+python python KNet/cli.py
+```
+
+2. Create a Topology
+In the KNet cli prompt, use "CreateTopology" command to creates a topology.
+
+
+Example:
+```
+KNet-cli#CreateTopology /home/ubuntu/KNet/examples/topo0.yaml
++---------+---------------+------------------------------------------+-------------+------------------+----------------+
+| Status  |     Name      |                  Links                   |  Switches   |    Controller    |     Nodes      |
++---------+---------------+------------------------------------------+-------------+------------------+----------------+
+| Created | Simple Star T | [u'a1->switch1', u'a2->switch1', u'a3->s | ['switch1'] | tcp:0.0.0.0:6633 | ['a1', 'a2', ' |
+|         |   opology 1   |         witch1', u'a4->switch1']         |             |                  |   a3', 'a4']   |
++---------+---------------+------------------------------------------+-------------+------------------+----------------+
+KNet-cli#
+```
+
+Now you can check the Topology Diagram in the UI http://localhost:5000/index.html. 
+![Topology Diagram](docs/topology_diagram.png?raw=true) 
+
+Make sure, you delete the Topology "DeleteTopology" before you exit the shell.
+
+```
+KNet-cli#DeleteTopology
+****--------- Topology Deleted---------****
+KNet-cli#Exit
+(knet) ubuntu@ubuntu:~/KNet$
+```
+
 
 ## Built With
 
@@ -148,7 +212,7 @@ Todo.
 
 ## Authors
 
-* **KNet Systems** 
+* **KNet Solutions** 
 
 ## License
 
