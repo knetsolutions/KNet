@@ -143,20 +143,27 @@ Its best practice before you start the KNet application, runs the cleanup script
 ## Testing
 
 **Start the SDN Controller**
+
+```
 ryu-manager --verbose apps/simple_switch_13.py
+```
 
 
 **Start the KNet UI**
+
 Run in the VirtualEnvironment,
+
 ```
 cd $HOME/KNet
 python ui/webserver.py >/dev/null 2>&1 &
 ```
 
 Open the Browser with below URL to see the topology diagram
+
 ```
 http://localhost:5000/index.html
 ```
+
 Run in the VirtualEnvironment,
 
 **Start the KNet CLI**
