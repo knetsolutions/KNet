@@ -24,12 +24,13 @@ Topology_schema = {
                     "properties": {
                         "url": {"type": "string"}
                         },
+                 },
                 "openflow": {
                     "type": "object",
                     "properties": {
-                        "version": {"type": "string"}
-                        },                
-                },
+                        "version": {"type": "number"}
+                        }
+                },      
                 "nodes": {
                     "type": "array",
                     "properties": {
@@ -41,14 +42,14 @@ Topology_schema = {
                     "type": "array",
                     "properties": {
                         "name": {"type": "string"},
-                        "datapathid": {"type": "string"},
+                        "datapathid": {"type": "number"},
                         "openflow": {
                             "type": "object",
                             "properties": {
-                                "version": {"type": "string"}
-                            },
-                        },
-                    },
+                                "version": {"type": "number"}
+                            }
+                        }
+                    }
                 },  # end of switches
                 "links": {
                     "type": "array",

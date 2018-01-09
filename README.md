@@ -192,7 +192,7 @@ KNet-cli#
 ```
 
 Now you can check the Topology Diagram in the UI http://localhost:5000/index.html. 
-![Topology Diagram](docs/topology_diagram.png?raw=true) 
+![Topology Diagram](docs/imgs/topo0.png?raw=true) 
 
 Make sure, you delete the Topology "DeleteTopology" before you exit the shell.
 

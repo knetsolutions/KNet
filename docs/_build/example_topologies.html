@@ -1,0 +1,162 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2. Examples &#8212; KNet 1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="1. KNet SDN Test Bed Introduction" href="introduction.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="examples">
+<h1>2. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p><cite>../examples</cite> folder consists of 7 examples topology ìnput file.</p>
+<div class="section" id="star-topology">
+<h2>2.1. Star Topology<a class="headerlink" href="#star-topology" title="Permalink to this headline">¶</a></h2>
+<p>Filename: <cite>topo0.yaml</cite></p>
+<div class="figure align-center" id="id1">
+<img alt="_images/topo0.png" src="_images/topo0.png" />
+<p class="caption"><span class="caption-text">Simple Star Topology.</span></p>
+</div>
+<p>This topology consists of 4 nodes, and a switch. All Nodes are connected to a same switch.</p>
+</div>
+<div class="section" id="linear-topology1">
+<h2>2.2. Linear Topology1<a class="headerlink" href="#linear-topology1" title="Permalink to this headline">¶</a></h2>
+<p>Filename: <cite>topo1.yaml</cite></p>
+<div class="figure align-center" id="id2">
+<img alt="_images/topo1.png" src="_images/topo1.png" />
+<p class="caption"><span class="caption-text">Simple Linear Topology.</span></p>
+</div>
+<p>This topology consists of 4 nodes, and two switches. 2 Nodes are connected in each switch. Also these switches are interconnected. Also MAC address is explicitly  mentioned.</p>
+</div>
+<div class="section" id="linear-topology2">
+<h2>2.3. Linear Topology2<a class="headerlink" href="#linear-topology2" title="Permalink to this headline">¶</a></h2>
+<p>Filename: <cite>topo2.yaml</cite></p>
+<div class="figure align-center" id="id3">
+<img alt="_images/topo2.png" src="_images/topo2.png" />
+<p class="caption"><span class="caption-text">Linear Topology with 4 Switches</span></p>
+</div>
+<p>This topology consists of 4 nodes, and four switches. Each node is connected in each switch. Also these switches are connected linearly and no loop.</p>
+</div>
+<div class="section" id="star-topology-with-qos">
+<h2>2.4. Star Topology with QoS<a class="headerlink" href="#star-topology-with-qos" title="Permalink to this headline">¶</a></h2>
+<p>Filename: <cite>topo3.yaml</cite></p>
+<div class="figure align-center" id="id4">
+<img alt="_images/topo3.png" src="_images/topo3.png" />
+<p class="caption"><span class="caption-text">Simple Star Topology with QoS.</span></p>
+</div>
+<p>Qos parameters configured in the Star Topology Links.</p>
+</div>
+<div class="section" id="ring-topology">
+<h2>2.5. Ring Topology<a class="headerlink" href="#ring-topology" title="Permalink to this headline">¶</a></h2>
+<p>Filename: <cite>topo4.yaml</cite></p>
+<div class="figure align-center" id="id5">
+<img alt="_images/topo4.png" src="_images/topo4.png" />
+<p class="caption"><span class="caption-text">Ring Topology.</span></p>
+</div>
+<p>This topology consists of 4 nodes, and four switches. Each node is connected in each switch. Also these switches are connected linearly and forms the loop.</p>
+</div>
+<div class="section" id="full-mesh-topology">
+<h2>2.6. Full Mesh Topology<a class="headerlink" href="#full-mesh-topology" title="Permalink to this headline">¶</a></h2>
+<p>Filename: <cite>topo5.yaml</cite></p>
+<div class="figure align-center" id="id6">
+<img alt="_images/topo5.png" src="_images/topo5.png" />
+<p class="caption"><span class="caption-text">Full Mesh Topology.</span></p>
+</div>
+<p>This topology consists of 4 nodes, and four switches. Each node is connected in each switch. Also these switches are interconnected with each other to form a full mesh.</p>
+</div>
+<div class="section" id="partial-mesh-topology">
+<h2>2.7. Partial Mesh Topology<a class="headerlink" href="#partial-mesh-topology" title="Permalink to this headline">¶</a></h2>
+<p>Filename: <cite>topo6.yaml</cite></p>
+<div class="figure align-center" id="id7">
+<img alt="_images/topo6.png" src="_images/topo6.png" />
+<p class="caption"><span class="caption-text">Partial Mesh Topology.</span></p>
+</div>
+<p>This topology consists of 4 nodes, and four switches. Each node is connected in each switch. Also these switches are interconnected with some other to form a partial mesh.</p>
+</div>
+<div class="section" id="tree-topology">
+<h2>2.8. Tree Topology<a class="headerlink" href="#tree-topology" title="Permalink to this headline">¶</a></h2>
+<p>Filename: <cite>topo7.yaml</cite></p>
+<div class="figure align-center" id="id8">
+<img alt="_images/topo7.png" src="_images/topo7.png" />
+<p class="caption"><span class="caption-text">Tree Topology.</span></p>
+</div>
+<p>This topology consists of 8 nodes, and 7 switches. This topology forms a binary tree with depth 3. Root Switch is S1. Second level  switches are S2 and S5. Third level switches are S3, S4, S6, S7. Nodes are connected to switches S3, S4, S6  and S7.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="introduction.html" title="previous chapter">1. KNet SDN Test Bed Introduction</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, KNet Solutions.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/example_topologies.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

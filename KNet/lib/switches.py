@@ -46,7 +46,7 @@ class Switch(object):
             return False
         ovs.create_bridge(self.name)
         ovs.set_controller(self.name, self.controller)
-        ovs.set_protocol_version(self.name, self.version)
+        ovs.set_protocol_version(self.name, str(self.version))
         ovs.set_datapath_id(self.name, self.datapathid)
         # Update theDB
         self.status = "created"
