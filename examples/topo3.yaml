@@ -12,15 +12,23 @@ Topology:
       -
         name: a1
         image: ubuntu:trusty
+        mac: 00:00:00:00:00:01
+        network: n1        
       -
         name: a2
-        image: ubuntu:trusty        
+        image: ubuntu:trusty    
+        mac: 00:00:00:00:00:02
+        network: n1        
       -
         name: a3
-        image: ubuntu:trusty    
+        image: ubuntu:trusty  
+        mac: 00:00:00:00:00:03
+        network: n1
       -
         name: a4
-        image: ubuntu:trusty    
+        image: ubuntu:trusty  
+        mac: 00:00:00:00:00:04
+        network: n1
     switches:
       -
         name: switch1
@@ -31,19 +39,14 @@ Topology:
         nodes:
           - 
             name: a1
-            mac: 00:00:00:00:00:01
             qos: q1
           - 
             name: a2
-            mac: 00:00:00:00:00:02
           - 
             name: a3
-            mac: 00:00:00:00:00:03
           - 
             name: a4
             qos: q2
-            mac: 00:00:00:00:00:04
-        network: n1
     networks:
       -
         name: n1

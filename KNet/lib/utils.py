@@ -76,16 +76,16 @@ link_t = db.table('link')
 network_t = db.table('network')
 qos_t = db.table('qos')
 
-def get_nodeid(node_name):
+def get_node_data(node_name):
     result = node_t.search(query.name == node_name)
     # print result
-    return result[0]['id']
+    return result[0]
 
 
-def get_switchid(switch_name):
+def get_switch_data(switch_name):
     result = switch_t.search(query.name == switch_name)
     # print result
-    return result[0]['id']
+    return result[0]
 
 def purge_db():
     topology_t.purge()

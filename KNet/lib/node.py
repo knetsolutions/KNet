@@ -22,15 +22,26 @@ import KNet.lib.docker_cmds as docker
 
 @add_metaclass(abc.ABCMeta)
 class Node(object):
-    def __init__(self, data):
+    def __init__(self, data, network):
         self.uuid = None
         self.id = utils.generate_id()
         self.name = data["name"]
         self.img = data["image"]
         self.status = "initialized"
+        if "mac" in data:
+            self.mac = data["mac"]
+        else:
+            self.mac = None
+
+        if 'ip' in data:
+            self.ip = data["ip"]
+        else:
+            self.ip = network.getip()
         # DB Updation
         self.docid = utils.node_t.insert({'id': self.id, 'name': self.name,
-                                          'img': self.img, 'status': self.status})
+                                          'img': self.img, 'ip': self.ip,
+                                          'mac': self.mac,
+                                          'status': self.status})
         # print self.docid
 
     def create(self):

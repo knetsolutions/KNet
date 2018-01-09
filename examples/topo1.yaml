@@ -13,15 +13,23 @@ Topology:
       -
         name: a1
         image: ubuntu:trusty
+        mac: 00:00:00:00:00:01
+        ip: 10.1.1.1/16      
       -
         name: a2
-        image: ubuntu:trusty        
+        image: ubuntu:trusty  
+        mac: 00:00:00:00:00:02
+        ip: 10.1.2.1/16      
       -
         name: a3
-        image: ubuntu:trusty    
+        image: ubuntu:trusty
+        mac: 00:00:00:00:00:03
+        ip: 10.1.3.1/16      
       -
         name: a4
-        image: ubuntu:trusty    
+        image: ubuntu:trusty  
+        mac: 00:00:00:00:00:04
+        ip: 10.1.4.1/16      
     switches:
       -
         name: switch1
@@ -34,27 +42,17 @@ Topology:
         nodes:
           - 
             name: a1
-            mac: 00:00:00:00:00:01
           - 
             name: a2
-            mac: 00:00:00:00:00:02
-        network: n1
       -        
         switches:
           - switch2
         nodes:
           - 
             name: a3
-            mac: 00:00:00:00:00:03
           - 
             name: a4
-            mac: 00:00:00:00:00:04
-        network: n1
       -
         switches:
           - switch1
           - switch2          
-    networks:
-      -
-        name: n1
-        subnet: 10.20.20.0/24

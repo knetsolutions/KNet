@@ -13,15 +13,19 @@ Topology:
       -
         name: a1
         image: ubuntu:trusty
+        network: n1        
       -
         name: a2
         image: ubuntu:trusty        
+        network: n1        
       -
         name: a3
         image: ubuntu:trusty    
+        network: n1        
       -
         name: a4
         image: ubuntu:trusty    
+        network: n1        
     switches:
       -
         name: switch1
@@ -38,28 +42,24 @@ Topology:
         nodes:
           - 
             name: a1
-        network: n1
       -        
         switches:
           - switch2
         nodes:
           - 
             name: a2
-        network: n1
       -
         switches:
           - switch3
         nodes:
           - 
             name: a3
-        network: n1
       -        
         switches:
           - switch4
         nodes:
           - 
             name: a4
-        network: n1
       -
         switches:
           - switch1

@@ -14,27 +14,41 @@ Topology:
       -
         name: a1
         image: ubuntu:trusty
+        network: n1        
       -
         name: a2
-        image: ubuntu:trusty        
+        image: ubuntu:trusty    
+        network: n1            
       -
         name: a3
         image: ubuntu:trusty    
+        network: n1
+
       -
         name: a4
         image: ubuntu:trusty    
+        network: n1
+
       -
         name: a5
         image: ubuntu:trusty
+        network: n1
+
       -
         name: a6
         image: ubuntu:trusty        
+        network: n1
+
       -
         name: a7
         image: ubuntu:trusty    
+        network: n1
+
       -
         name: a8
         image: ubuntu:trusty  
+        network: n1
+
     switches:
       -
         name: S1
@@ -59,7 +73,6 @@ Topology:
             name: a1
           -
             name: a2
-        network: n1
       -        
         switches:
           - S4
@@ -68,7 +81,6 @@ Topology:
             name: a3
           -
             name: a4
-        network: n1
       -
         switches:
           - S6
@@ -77,7 +89,6 @@ Topology:
             name: a5
           -
             name: a6
-        network: n1
       -        
         switches:
           - S7
@@ -86,7 +97,6 @@ Topology:
             name: a7
           -
             name: a8
-        network: n1
       -
         switches:
           - S1

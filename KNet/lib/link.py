@@ -23,8 +23,8 @@ import KNet.lib.tc_cmds as tc
 
 @add_metaclass(abc.ABCMeta)
 class NodeLink(object):
-    def __init__(self, network, data, qos=None):
-        self.network = network
+    def __init__(self, data, qos=None):
+        # self.network = network
         self.qos = qos
         self.switch = data["switches"][0]
         self.nodes = data["nodes"]
@@ -35,21 +35,23 @@ class NodeLink(object):
             # print node
             node_interface = "eth1"
             qos = None
-            mac = None
-            if "mac" in node:
-                mac = node["mac"]
-            ip = self.network.getip()
+            #mac = None
+            #if "mac" in node:
+            #    mac = node["mac"]
+            #ip = self.network.getip()
+            n = utils.get_node_data(node["name"])
 
             # create a link node to switch
             ovs.create_link(self.switch, node_interface, node["name"],
-                            ip, mac)
+                            n['ip'], n['mac'])
             # get the tap interface name
             tapif = ovs.get_port_name(node["name"], node_interface)
             # link - source node id
-            sourceid = utils.get_nodeid(node["name"])
+            # sourceid = utils.get_node_data(node["name"])
+            sourceid = n["id"]
             # link -target node id
-            targetid = utils.get_switchid(self.switch)
-
+            s = utils.get_switch_data(self.switch)
+            targetid = s["id"] 
             # apply the Qos to the interface
             if "qos" in node:
                 qos = self.getqos(node["qos"])
@@ -69,7 +71,7 @@ class NodeLink(object):
                                               'if1': node_interface,
                                               'if2': tapif,
                                               'qos': qos,
-                                              'ip': ip})
+                                              })
 
     def getifname(self):
         for node in self.nodes:
@@ -115,10 +117,11 @@ class SwitchLink(object):
         ovs.peer_patch_ports(self.dst_patchif, self.src_patchif)
 
         # link - source node id
-        sourceid = utils.get_switchid(self.src_switch)
+        s = utils.get_switch_data(self.src_switch)
+        sourceid = s["id"]
         # link -target node id
-        targetid = utils.get_switchid(self.dst_switch)
-
+        t = utils.get_switch_data(self.dst_switch)
+        targetid = t["id"]
         # store the link endpoints in array (for UI drawing)
         self.links.append({"source": sourceid,
                            "target": targetid,
@@ -135,7 +138,7 @@ class SwitchLink(object):
                                           'if1': self.src_patchif,
                                           'if2': self.dst_patchif,
                                           'qos': None,
-                                          'ip': None})
+                                          })
 
     def delete(self):
         pass

@@ -70,10 +70,12 @@ class Topology(Singleton, object):
         self.name = tdata["Topology"]["name"]
         self.controller = tdata["Topology"]["controller"]["url"]
 
-        log.debug("Topology Creating Networks")
-        for net in tdata["Topology"]["networks"]:
-            networkobj = Network(net)
-            self.networkobjs.append(networkobj)
+        # check network object is present in the topology input
+        if "networks" in tdata["Topology"]:
+            log.debug("Topology Creating Networks")
+            for net in tdata["Topology"]["networks"]:
+                networkobj = Network(net)
+                self.networkobjs.append(networkobj)
 
         # qos - doesnt require objects. we need to just pass this
         # complete dict to Linkobj.
@@ -83,7 +85,11 @@ class Topology(Singleton, object):
         # create nodes
         log.debug("Topology Creating Nodes")
         for n in tdata["Topology"]["nodes"]:
-            nodeobj = Node(n)
+            # get the network object for the node
+            net = None
+            if "network" in n:
+                net = self.__getnetwork(n["network"])
+            nodeobj = Node(data=n, network=net)
             nodeobj.create()
             self.nodeobjs.append(nodeobj)
 
@@ -102,8 +108,7 @@ class Topology(Singleton, object):
         for l in tdata["Topology"]["links"]:
             # creating nodeLinks
             if "nodes" in l:
-                lobj = NodeLink(network=self.__getnetwork(l["network"]),
-                                data=l, qos=self.qos)
+                lobj = NodeLink(data=l, qos=self.qos)
             else:
                 # creating Switch Links
                 lobj = SwitchLink(data=l)
