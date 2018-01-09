@@ -33,6 +33,7 @@ import KNet.lib.utils as utils
 import KNet.lib.ovs_cmds as ovs
 from KNet.lib.logger import logger as log
 from KNet.lib.schema import Topology_schema as schema
+import KNet.lib.docker_cmds as docker
 
 UI_DATAFILE = "ui/static/app/data.js"
 UI_DEFAULTDATAFILE = "ui/static/app/data_default.js"
@@ -210,11 +211,24 @@ class Topology(Singleton, object):
         ovs.adminup_link(ifname)
 
     def ping(self, src, dst):
-        return "Command Not yet implemented"
+        snode = self.__getNodebyName(src)
+        dnode = self.__getNodebyName(dst)
+        if snode is not None and dnode is not None:
+            print "Ping from node " + snode.name + " to " + dnode.name
+            print docker.run_ping_in_container(snode.name,
+                                               dnode.ip.split('/')[0])
+            print "---------------------------------------------------"
+        else:
+            print "Node not found"
 
-    def pingall(self, src, dst):
-        return "Command Not yet implemented"
-
+    def pingAll(self):
+        for snode in self.nodeobjs:
+            for dnode in self.nodeobjs:
+                if snode.id != dnode.id:
+                    print "Ping from node " + snode.name + " to " + dnode.name
+                    print docker.run_ping_in_container(snode.name,
+                                                 dnode.ip.split('/')[0])        
+                    print "---------------------------------------------------"
     # private functions
     def __write_ui_data(self):
         topologyData = {}
@@ -304,7 +318,9 @@ class Topology(Singleton, object):
             result.append({"name": node.name,
                            "status": node.status,
                            "id": node.id,
-                           "image": node.img
+                           "image": node.img,
+                           "ip": node.ip,
+                           "mac": node.mac
                            })
 
         return result

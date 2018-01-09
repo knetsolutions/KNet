@@ -34,6 +34,11 @@ def delete_container(name):
     return utils.run_cmd(cmd)
 
 
+def run_ping_in_container(name, ip):
+    # sudo docker exec -it a3 ping 10.20.20.2 -c 5
+    cmd = ['sudo', 'docker', 'exec', '-it', name, 'ping', '-A', '-c', '5', ip]
+    return utils.run_cmd(cmd)
+
 # Not used
 def verify_image_exits(img):
     img_name, img_version = img.split(':')
