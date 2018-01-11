@@ -22,7 +22,7 @@ setup(
     version='1.0',
     description="Virtual Network Topology Builder",
     author="KNet Solutions",
-    author_email="",
+    author_email="knetsolutions2@gmail.com",
     url="knetsolutions.in",
     packages=find_packages(),
     include_package_data=True,
