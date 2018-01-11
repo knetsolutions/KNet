@@ -38,7 +38,12 @@ Welcome to KNet's documentation!
    :caption: Table of Contents:
    :numbered:
 
-   overview/index
-   installation/index
-   quick_start/index
-   cli_and_ui/index
+   overview
+   installation
+   quick_start
+   cli
+   webui
+   example_topologies
+   topology_file
+   docker_commands
+   ovs_commands
