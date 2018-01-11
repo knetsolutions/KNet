@@ -9,7 +9,7 @@ Star Topology
 
 Filename: `topo0.yaml`
 
-.. figure::  imgs/topo0.png
+.. figure::  ../imgs/topo0.png
    :align:   center
 
    Simple Star Topology.
@@ -22,7 +22,7 @@ Linear Topology1
 -----------------
 Filename: `topo1.yaml`
 
-.. figure::  imgs/topo1.png
+.. figure::  ../imgs/topo1.png
    :align:   center
 
    Simple Linear Topology.
@@ -34,7 +34,7 @@ Linear Topology2
 
 Filename: `topo2.yaml`
 
-.. figure::  imgs/topo2.png
+.. figure::  ../imgs/topo2.png
    :align:   center
 
    Linear Topology with 4 Switches
@@ -47,7 +47,7 @@ Star Topology with QoS
 
 Filename: `topo3.yaml`
 
-.. figure::  imgs/topo3.png
+.. figure::  ../imgs/topo3.png
    :align:   center
 
    Simple Star Topology with QoS.
@@ -60,7 +60,7 @@ Ring Topology
 
 Filename: `topo4.yaml`
 
-.. figure::  imgs/topo4.png
+.. figure::  ../imgs/topo4.png
    :align:   center
 
    Ring Topology.
@@ -72,7 +72,7 @@ Full Mesh Topology
 
 Filename: `topo5.yaml`
 
-.. figure::  imgs/topo5.png
+.. figure::  ../imgs/topo5.png
    :align:   center
 
    Full Mesh Topology.
@@ -84,7 +84,7 @@ Partial Mesh Topology
 
 Filename: `topo6.yaml`
 
-.. figure::  imgs/topo6.png
+.. figure::  ../imgs/topo6.png
    :align:   center
 
    Partial Mesh Topology.
@@ -97,7 +97,7 @@ Tree Topology
 
 Filename: `topo7.yaml`
 
-.. figure::  imgs/topo7.png
+.. figure::  ../imgs/topo7.png
    :align:   center
 
    Tree Topology.
