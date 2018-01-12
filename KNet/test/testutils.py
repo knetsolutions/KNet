@@ -1,5 +1,5 @@
 import unittest
-from KNet.lib.utils import utils as utils
+import KNet.lib.utils as utils
 
 
 class TestUtils(unittest.TestCase):
