@@ -67,6 +67,7 @@ This command will install the Docker, openvswitch and required packages.
 .. figure::  imgs/quick_start/KNet_install_s.png
    :align:   center
 
+Installation output.
 
 .. figure::  imgs/quick_start/knet_install_output_s.png
    :align:   center
@@ -93,7 +94,7 @@ Open FireFox/Chrome, with URL: ĥttp://ip:5000/index.html, and see the empty top
 
 .. code-block:: bash
 
-	python python KNet/cli.py
+	python KNet/cli.py
 
 
 .. figure::  imgs/quick_start/Knet_CLI_example_s.png
