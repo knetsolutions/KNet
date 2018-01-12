@@ -1,3 +1,5 @@
+[![Doc Status](https://readthedocs.org/projects/knet-topology-builder/badge/?version=latest)](http://knet-topology-builder.readthedocs.org/en/latest/)
+
 # KNet
 
 KNet is a Virtual Network Tobology builder, Primarily used as SDN Test Environment.
@@ -7,6 +9,8 @@ KNet builds the Virtual Network Topology with Switches, Nodes, Links. KNet uses 
 KNet support QoS parameter configuration for the Links, such as bandwidth, latency, jitter and packetloss.
 
 KNet supports the CLI and Web Interface. 
+
+**Detailed Document is available [readthedocs](http://knet-topology-builder.readthedocs.io)**
 
 
 ## Getting Started

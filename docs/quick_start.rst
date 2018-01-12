@@ -21,6 +21,8 @@ Quick Start
 ============
 In this QuickStart section, we see few quick steps to install and execute the sample topology with RYU Controller.
 
+KNet is currently supported and Tested in **Ubuntu 16.04 and 14.04** versions.
+
 We have used  Ubuntu 16.04 OS for the below demonstations. (The procedure is same for Ubuntu 14.04 OS also)
 
 .. figure::  imgs/quick_start/ubuntuversion_s.png
@@ -181,6 +183,15 @@ CLI
 
 .. figure::  imgs/quick_start/ovs_dumpflows_output_s.png
    :align:   center	
+
+
+How to Run the IPERF Tests:
+------------------------------------
+
+1. Login to the Node and Install the iperf package
+	Refer :ref:`docker-install-package`.
+2. Execute the iperf commands in the nodes.
+
 
 
 Delete the Topology

@@ -20,4 +20,33 @@
 Useful Openvswitch Commands
 ============================
 
-Todo
+
+List the Switches:
+----------------------
+
+The following command lists all the switches.  You can identify the switch with "name" names, its same as switch name given in the topology file.
+
+
+.. code-block:: bash
+
+	sudo ovs-vsctl show
+
+Screenshot:
+
+.. figure::  imgs/ovs/ovs_show_s.png
+   :align:   center
+
+
+List the Flows installed in the Switch
+------------------------------------------------------
+.. code-block:: bash
+
+	sudo ovs-ofctl -O <openflow version> dump-flows <switch name>
+
+	Example :
+	sudo ovs-ofctl -O OpenFlow13 dump-flows switch1
+
+Screenshot:
+
+.. figure::  imgs/ovs/ovs_flows_s.png
+   :align:   center
