@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/knetsolutions/KNet.svg?branch=master)](https://travis-ci.org/eonpatapon/contrail-api-cli)
+[![Build Status](https://travis-ci.org/knetsolutions/KNet.svg?branch=master)](https://travis-ci.org/knetsolutions/KNet)
 [![Doc Status](https://readthedocs.org/projects/knet-topology-builder/badge/?version=latest)](http://knet-topology-builder.readthedocs.org/en/latest/)
 
 # KNet
