@@ -39,10 +39,8 @@ Welcome to KNet's documentation!
    :numbered:
 
    overview
-   installation
    quick_start
    cli
-   webui
    example_topologies
    topology_file
    docker_commands

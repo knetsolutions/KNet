@@ -20,25 +20,19 @@
 Overview
 ========
 
-Todo
+Software Defined Networking(SDN) opens the innovation in networking domain. University Students/Research fellows does plenty of innovative networking solutions with SDN.
 
+Building the Network Topology for their research activity is still nightmare.
 
-SDN Use Cases
--------------
+KNet is Virtual Network Topology Builder, it builds the Network Topology as a real network environment.  It means the Nodes are built with Docker Containers.
 
-Todo
-
-Usecase1
-^^^^^^^^
-Todo
-
-
-Usecase2
-^^^^^^^^
-Todo
-
+User can install any required packages (apache2,mysql,hacking tools.. etc)
+User have full control on the nodes to generate the real time original protocol traffic(no simulation).
 
 
 Architecture
 ============
-Todo
+
+.. image:: ./imgs/KNet_Actions.png
+   :align: center
+
