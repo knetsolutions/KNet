@@ -11,11 +11,11 @@ KNet support QoS parameter configuration for the Links, such as bandwidth, laten
 
 KNet supports the CLI and Web Interface. 
 
-**Detailed Document is available [readthedocs](http://knet-topology-builder.readthedocs.io)**
+**Detailed Document is available in [readthedocs](http://knet-topology-builder.readthedocs.io)**
 
 ## Getting Started
 
-KNet can be installed on any Linux distributions. But we have tested only Ubuntu 14.04 and 16.04.
+KNet can be installed on any Linux distributions. But we have tested only **Ubuntu 14.04 and 16.04.**
 
 Minimum hardware configuration required is 4GB RAM, 2 Core processors. Higher configuration gives better result. 
 

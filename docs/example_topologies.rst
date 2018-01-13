@@ -16,7 +16,7 @@ Filename: `topo0.yaml`
 
 This topology consists of 4 nodes, and a switch. All Nodes are connected to a same switch.
 
-
+RYU OpenFlow13 Switch application **simple_switch_13.py** can be used to test this topology.
 
 Linear Topology1
 -----------------
@@ -28,6 +28,8 @@ Filename: `topo1.yaml`
    Simple Linear Topology.
 
 This topology consists of 4 nodes, and two switches. 2 Nodes are connected in each switch. Also these switches are interconnected. Also MAC address is explicitly  mentioned.
+
+RYU OpenFlow13 Switch application **simple_switch_13.py** can be used to test this topology.
 
 Linear Topology2
 -----------------
@@ -41,6 +43,7 @@ Filename: `topo2.yaml`
 
 This topology consists of 4 nodes, and four switches. Each node is connected in each switch. Also these switches are connected linearly and no loop. 
 
+RYU OpenFlow13 Switch application **simple_switch_13.py** can be used to test this topology.
 
 Star Topology with QoS
 -----------------------
@@ -54,6 +57,7 @@ Filename: `topo3.yaml`
 
 Qos parameters configured in the Star Topology Links.
 
+RYU OpenFlow13 Switch application **simple_switch_13.py** can be used to test this topology.
 
 Ring Topology
 -----------------------
@@ -67,6 +71,10 @@ Filename: `topo4.yaml`
       
 This topology consists of 4 nodes, and four switches. Each node is connected in each switch. Also these switches are connected linearly and forms the loop.
 
+This topology forms a loop, hence  RYU STP application **simple_switch_stp_13.py** to be used to test this topology.
+
+
+
 Full Mesh Topology 
 -----------------------
 
@@ -78,6 +86,8 @@ Filename: `topo5.yaml`
    Full Mesh Topology.
 
 This topology consists of 4 nodes, and four switches. Each node is connected in each switch. Also these switches are interconnected with each other to form a full mesh.
+
+This topology forms a loop, hence  RYU STP application **simple_switch_stp_13.py** to be used to test this topology.
 
 Partial Mesh Topology 
 -----------------------
@@ -91,6 +101,8 @@ Filename: `topo6.yaml`
 
 This topology consists of 4 nodes, and four switches. Each node is connected in each switch. Also these switches are interconnected with some other to form a partial mesh.
 
+This topology forms a loop, hence  RYU STP application **simple_switch_stp_13.py** to be used to test this topology.
+
 
 Tree Topology 
 -----------------------
@@ -103,3 +115,5 @@ Filename: `topo7.yaml`
    Tree Topology.
 
 This topology consists of 8 nodes, and 7 switches. This topology forms a binary tree with depth 3. Root Switch is S1. Second level  switches are S2 and S5. Third level switches are S3, S4, S6, S7. Nodes are connected to switches S3, S4, S6  and S7.
+
+RYU OpenFlow13 Switch application **simple_switch_13.py** can be used to test this topology.
