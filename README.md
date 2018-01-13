@@ -13,7 +13,6 @@ KNet supports the CLI and Web Interface.
 
 **Detailed Document is available [readthedocs](http://knet-topology-builder.readthedocs.io)**
 
-
 ## Getting Started
 
 KNet can be installed on any Linux distributions. But we have tested only Ubuntu 14.04 and 16.04.
@@ -225,7 +224,7 @@ Todo.
 
 ## Authors
 
-* **KNet Solutions** 
+[KNet Solutions](http://knetsolutions.in)
 
 ## License
 
