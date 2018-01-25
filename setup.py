@@ -24,13 +24,14 @@ setup(
     author="KNet Solutions",
     author_email="knetsolutions2@gmail.com",
     url="knetsolutions.in",
-    packages=find_packages(),
+    packages=find_packages(exclude=['test']),
     include_package_data=True,
     install_requires=install_requires,
     dependency_links=dependency_links,
     scripts=[],
     license="Apache",
     entry_points={
+        'console_scripts': ['knet-cli=KNet.cli:main'],
     },
     classifiers=[
         'Development Status :: 1 - Alpha',
