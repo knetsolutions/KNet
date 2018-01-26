@@ -1,1 +1,0 @@
-var topologyData = {"nodes": [],"links": []}

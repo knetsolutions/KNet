@@ -1,3 +1,0 @@
-#!/usr/bin/env python
-from KNet.app import knetcli
-knetcli()
