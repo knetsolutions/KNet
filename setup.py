@@ -17,11 +17,11 @@ test_requires = []
 
 setup(
     name='KNet',
-    version='1.0',
+    version='1.0.1',
     description="Virtual Network Topology Builder",
     author="KNet Solutions",
     author_email="knetsolutions2@gmail.com",
-    url="knetsolutions.in",
+    url="https://github.com/knetsolutions/KNet",
     packages=find_packages(exclude=['test']),
     include_package_data=True,
     install_requires=install_requires,
@@ -31,10 +31,9 @@ setup(
         'console_scripts': ['knet-cli=KNet.app:knetcli'],
     },
     classifiers=[
-        'Development Status :: 1 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: User Interfaces',
-        'License :: Apache License',
         'Programming Language :: Python :: 2.7'
     ]
 )
