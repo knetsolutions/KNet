@@ -17,7 +17,7 @@ test_requires = []
 
 setup(
     name='KNet',
-    version='1.0.2',
+    version='1.0.3',
     description="Virtual Network Topology Builder",
     author="KNet Solutions",
     author_email="knetsolutions2@gmail.com",
@@ -27,6 +27,7 @@ setup(
     install_requires=install_requires,
     license="Apache",
     keywords='sdn',
+    python_requires='>=2.6, <3',
     entry_points={
         'console_scripts': ['knet-cli=KNet.app:knetcli'],
     },
