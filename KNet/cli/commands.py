@@ -13,7 +13,7 @@
    limitations under the License.
 '''
 
-from mCli.commands.base import Command
+from smallcli.commands.base import Command
 from KNet.lib.topology import Topology
 import sys
 import yaml

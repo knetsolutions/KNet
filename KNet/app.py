@@ -16,16 +16,18 @@
 from __future__ import unicode_literals
 import sys
 import abc
+import os
 from six import add_metaclass, text_type
-from mCli.libs.shell import Shell
+from smallcli.libs.shell import Shell
 
-# main application
+# main CLI application
 
 
-def main(argv):
-    argv = sys.argv[1:]
-    cpath = "KNet/cli"
-    cprefix = "cli."
+def knetcli():
+    cpath = os.path.dirname(os.path.abspath(__file__)) + "/cli"
+    print "directory ", cpath
+
+    cprefix = "KNet.cli."
     hdr = '''
     ****************************************************************
     *                                                               *
@@ -36,9 +38,10 @@ def main(argv):
     *                                                               *
     *****************************************************************
     '''
-    cli = Shell(appname="KNet-cli", symbol="#", hdr=hdr, cmdpath=cpath, cmdprefix=cprefix)
+    cli = Shell(appname="KNet-cli", symbol="#", hdr=hdr, cmdpath=cpath,
+                cmdprefix=cprefix)
     cli()
     print "exiting"
 
-if __name__ == "__main__":
-    main(sys.argv)
+# if __name__ == "__main__":
+#    cli(sys.argv)

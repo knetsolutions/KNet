@@ -10,11 +10,9 @@ install_requires = [
     'logger==1.4',
     'flask==0.12.2',
     'jsonschema==2.6.0',
-    'mCli'
+    'smallcli==0.1',
 ]
-dependency_links = [
-     "git+http://github.com/sureshkvl/mCli#egg=mCli-1.0"
-    ]
+
 test_requires = []
 
 setup(
@@ -27,11 +25,10 @@ setup(
     packages=find_packages(exclude=['test']),
     include_package_data=True,
     install_requires=install_requires,
-    dependency_links=dependency_links,
-    scripts=[],
     license="Apache",
+    keywords='sdn',
     entry_points={
-        'console_scripts': ['knet-cli=KNet.cli:main'],
+        'console_scripts': ['knet-cli=KNet.app:knetcli'],
     },
     classifiers=[
         'Development Status :: 1 - Alpha',
