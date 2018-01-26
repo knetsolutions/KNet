@@ -36,6 +36,32 @@ class Exit(Command):
         sys.exit()
 
 
+class Version(Command):
+    description = "Version"
+    details = '''
+    Version of the KNet
+    Args: None
+    return: result
+    Example:  Version
+    '''
+
+    def __call__(self, args):
+        return t.version()
+
+
+class Cleanup(Command):
+    description = "Cleanup"
+    details = '''
+    Cleanup the Test Environment, Removes the Nodes, Switches, DB stuff etc
+    Args: None
+    return: None
+    Example:  Cleanup
+    '''
+
+    def __call__(self, args):
+        return t.cleanup()
+
+
 class CreateTopology(Command):
     description = "Create Topology in SDN Test Bed"
     details = '''

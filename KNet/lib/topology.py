@@ -16,6 +16,7 @@
 from __future__ import unicode_literals
 import sys
 import abc
+import os
 from six import add_metaclass, text_type
 import json
 import jsonschema
@@ -35,8 +36,8 @@ from KNet.lib.logger import logger as log
 from KNet.lib.schema import Topology_schema as schema
 import KNet.lib.docker_cmds as docker
 
-UI_DATAFILE = "ui/static/app/data.js"
-UI_DEFAULTDATAFILE = "ui/static/app/data_default.js"
+UI_DATAFILE = "/tmp/data.js"
+VERSION = "1.0.2"
 
 
 @add_metaclass(abc.ABCMeta)
@@ -229,6 +230,15 @@ class Topology(Singleton, object):
                     print docker.run_ping_in_container(snode.name,
                                                  dnode.ip.split('/')[0])        
                     print "---------------------------------------------------"
+
+    def version(self):
+        return VERSION
+
+    def cleanup(self):
+        cpath = os.path.dirname(os.path.abspath(__file__)) + "/cleanup.sh"
+        cmd = ['sh', cpath]
+        return utils.run_cmd(cmd)
+
     # private functions
     def __write_ui_data(self):
         topologyData = {}
