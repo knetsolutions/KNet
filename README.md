@@ -15,6 +15,8 @@ KNet supports the CLI and Web Interface.
 
 ## Getting Started
 
+Currently KNet is compatible with **Python 2.7** only.
+
 KNet can be installed on any Linux distributions. But we have tested only **Ubuntu 14.04 and 16.04.**
 
 Minimum hardware configuration required is 4GB RAM, 2 Core processors. Higher configuration gives better result. 
@@ -30,59 +32,52 @@ curl https://raw.githubusercontent.com/knetsolutions/KNet/master/install.sh | sh
 
 ### Installing
 
-KNet is developed in Python 2.7. I suggest to install it in VirtualEnv as below. 
-
-**Create a Python Virtual environment**
+Install Knet as below,
 
 ```
-export LC_ALL="en_US.UTF-8"
-cd $HOME
-virtualenv knet
-. knet/bin/activate
-```
-
-Example output
-```
-ubuntu@ubuntu:~$ export LC_ALL="en_US.UTF-8"
-ubuntu@ubuntu:~$ cd $HOME
-ubuntu@ubuntu:~$ virtualenv knet
-Running virtualenv with interpreter /usr/bin/python2
-New python executable in /home/ubuntu/knet/bin/python2
-Also creating executable in /home/ubuntu/knet/bin/python
-Installing setuptools, pkg_resources, pip, wheel...done.
-ubuntu@ubuntu:~$ . knet/bin/activate
-(knet) ubuntu@ubuntu:~$ 
+pip install knet
 
 ```
 
-**Installing KNet**
+Congrats... Installation Completed. 
+This installs the **knet-cli** executable script. Just run **knet-cli** command to get in to CLI.
 
-Install the KNet in the virtual environment as below
+
+### How to Run CLI
+
+Execute the below command to get in to KNet CLI
 ```
-git clone https://github.com/knetsolutions/KNet
-cd KNet
-pip install --process-dependency-links .
+knet-cli
 ```
 
-Example Output:
+### CLI Commands
+
+CLI supports the following commands
+
 ```
-(knet) ubuntu@ubuntu:~$ git clone https://github.com/knetsolutions/KNet
-Cloning into 'KNet'...
-remote: Counting objects: 231, done.
-remote: Compressing objects: 100% (89/89), done.
-remote: Total 231 (delta 135), reused 226 (delta 133), pack-reused 0
-Receiving objects: 100% (231/231), 718.91 KiB | 409.00 KiB/s, done.
-Resolving deltas: 100% (135/135), done.
-Checking connectivity... done.
-(knet) ubuntu@ubuntu:~$ 
-(knet) ubuntu@ubuntu:~$ cd KNet/
-(knet) ubuntu@ubuntu:~/KNet$ pip install --process-dependency-links .
-Processing /home/ubuntu/KNet
-Collecting six==1.11.0 (from KNet==1.0)
-.....(output omitted)
-(knet) ubuntu@ubuntu:~/KNet$
+Help
+Cleanup
+CreateTopology
+DeleteTopology
+GetTopology
+DeleteNode
+DeleteSwitch
+AdminDownLink
+AdminUpLink
+PingAll
+Ping
+Exit
 ```
-Congrats... Installation Completed.
+
+To get the detailed help for a command
+
+
+```
+Help CreateTopology
+
+```
+
+
 
 
 ## Few Things to know about KNet.
@@ -96,35 +91,8 @@ Topology consists of Nodes, Switches, Links, QoS, Network Objects. Nodes are bui
 
 User should write Topology in YAML file. This Topology file will be input to the KNet for Topology Creation.
 
-Example Topology files(linear,ring,mesh,parial mesh, tree) are available in examples folder. 
+Example Topology files(linear,ring,mesh,parial mesh, tree) are available in https://github.com/knetsolutions/knet-example-topologies repository. 
 
-**CLI**
-
-KNet comes with simple CLI (Command Line Interface). It supports the following commands
-
-```
-Help
-CreateTopology
-DeleteTopology
-GetTopology
-DeleteNode
-DeleteSwitch
-AdminDownLink
-AdminUpLink
-PingAll
-Ping
-Exit
-```
-To get the detailed help for a command
-
-```
-Help CreateTopology
-
-```
-
-**UI (Web Interface)**
-
-KNet comes with Web Interface. Its used for Viewing the Topology. Configuration is NOT supported. This Web Interface displayes Topology in Graphical representation and reflects the topology changes. 
 
 **Node**
 
@@ -137,13 +105,26 @@ docker commands can be used to control the nodes.
 
 Openvswitch is used for building switches.  openswitch commands can be used to debug the switches.
 
-**Cleanup Script**
 
-Cleanup script is included in the repo(cleanup.sh).
 
-Suppose, you created topology and exit the cli without deleted  the topology. The Topology footprints (docker containers, switches) exists in the system. So next time , topology creation may fail. 
+## UI - Web Interface
 
-Its best practice before you start the KNet application, runs the cleanup script. It cleans all the docker nodes,openvswitches  exists in your system.
+KNet UI is optional component. 
+It is used for Viewing the Topology.  This Web Interface displayes Topology in Graphical representation and reflects the topology changes. 
+
+KNet UI repo is available in  https://github.com/knetsolutions/knet-ui
+
+**UI Installation**
+
+```
+git clone https://github.com/knetsolutions/knet-ui
+cd knet-ui
+python ui/webserver.py
+
+```
+UI can be accessible in  http://localhost:5000/index.html
+
+
 
 ## Testing
 
@@ -153,39 +134,20 @@ Its best practice before you start the KNet application, runs the cleanup script
 ryu-manager --verbose apps/simple_switch_13.py
 ```
 
-
-**Start the KNet UI**
-
-Run in the VirtualEnvironment,
+**Start the Knet CLI**
 
 ```
-cd $HOME/KNet
-python ui/webserver.py >/dev/null 2>&1 &
+knet-cli
 ```
 
-Open the Browser with below URL to see the topology diagram
-
-```
-http://localhost:5000/index.html
-```
-
-Run in the VirtualEnvironment,
-
-**Start the KNet CLI**
-
-1. Start the CLI
-```
-cd $HOME/KNet
-python python KNet/cli.py
-```
-
-2. Create a Topology
+**Create a Topology**
+Note : Topology example files available in https://github.com/knetsolutions/knet-example-topologies
 In the KNet cli prompt, use "CreateTopology" command to creates a topology.
 
 
 Example:
 ```
-KNet-cli#CreateTopology /home/ubuntu/KNet/examples/topo0.yaml
+KNet-cli#CreateTopology /home/ubuntu/knet-example-topologies/1.0/topo0.yaml
 +---------+---------------+------------------------------------------+-------------+------------------+----------------+
 | Status  |     Name      |                  Links                   |  Switches   |    Controller    |     Nodes      |
 +---------+---------------+------------------------------------------+-------------+------------------+----------------+
@@ -193,6 +155,21 @@ KNet-cli#CreateTopology /home/ubuntu/KNet/examples/topo0.yaml
 |         |   opology 1   |         witch1', u'a4->switch1']         |             |                  |   a3', 'a4']   |
 +---------+---------------+------------------------------------------+-------------+------------------+----------------+
 KNet-cli#
+```
+
+
+**Start the KNet UI**
+
+
+```
+cd knet-ui
+python ui/webserver.py
+```
+
+Open the Browser with below URL to see the topology diagram
+
+```
+http://localhost:5000/index.html
 ```
 
 Now you can check the Topology Diagram in the UI http://localhost:5000/index.html. 
