@@ -21,6 +21,8 @@ Quick Start
 ============
 In this QuickStart section, we see few quick steps to install and execute the sample topology with RYU Controller.
 
+KNet is compatible with **Python 2.7** only.
+
 KNet is currently supported and Tested in **Ubuntu 16.04 and 14.04** versions.
 
 We have used  Ubuntu 16.04 OS for the below demonstations. (The procedure is same for Ubuntu 14.04 OS also)
@@ -58,31 +60,23 @@ This command will install the Docker, openvswitch and required packages.
 
 .. code-block:: bash
 
-	cd $HOME
-	export LC_ALL="en_US.UTF-8"
-	virtualenv knet
-	. knet/bin/activate
-	git clone https://github.com/knetsolutions/KNet
-	cd KNet/
-	pip install --process-dependency-links .
+	pip install knet
 
-.. figure::  imgs/quick_start/KNet_install_s.png
+
+.. figure::  imgs/quick_start/knet_pip_install_s.png
    :align:   center
 
-Installation output.
 
-.. figure::  imgs/quick_start/knet_install_output_s.png
-   :align:   center
-
-Note: We are installing the KNet in the Virtual Environment. User can install it without virtual environment also.
-
-4. Start the KNet WebUI & and Verify the WebUI in browser 
+4. Install the KNet WebUI & and Verify the WebUI in browser 
 
 .. code-block:: bash
-	
+
+	git clone https://github.com/knetsolutions/knet-ui
+	cd knet-ui
 	python ui/webserver.py >/dev/null 2>&1 &
 
-.. figure::  imgs/quick_start/startwebui_s.png
+
+.. figure::  imgs/quick_start/knet_ui_install_s.png
    :align:   center
 
 Open FireFox/Chrome, with URL: ĥttp://ip:5000/index.html, and see the empty topology page.
@@ -96,10 +90,10 @@ Open FireFox/Chrome, with URL: ĥttp://ip:5000/index.html, and see the empty top
 
 .. code-block:: bash
 
-	python KNet/cli.py
+	knet-cli
 
 
-.. figure::  imgs/quick_start/Knet_CLI_example_s.png
+.. figure::  imgs/quick_start/knet_cli_start_s.png
    :align:   center
 
 
@@ -107,7 +101,10 @@ Create a sample Topology and Testing
 -------------------------------------
 Now Let us Create the Sample Star Topology with RYU SDN Controller.
 
-Star Topology file is available in examples/topo0.yaml
+Example topology files are available in  https://github.com/knetsolutions/knet-example-topologies
+
+
+Star Topology file is available in topo0.yaml
 
 
 Setup the RYU SDN Controller
@@ -143,9 +140,9 @@ CLI
 
 .. code-block:: bash
 
-	CreateTopology /home/suresh/KNet/examples/topo0.yaml
+	CreateTopology /home/suresh/knet-example-topologies/1.0/topo0.yaml
 
-.. figure::  imgs/quick_start/CLI_CreateTopology_s.png
+.. figure::  imgs/quick_start/knet_topology_creation_s.png
    :align:   center
 
 2. Verify the topology digram in UI.
