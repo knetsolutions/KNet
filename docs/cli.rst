@@ -25,6 +25,7 @@ KNet  CLI is a primary interface for the user to Create/delete/manipulate the To
 .. code-block:: bash
 
 	Help
+	Cleanup
 	CreateTopology
 	DeleteTopology
 	GetTopology
@@ -39,27 +40,14 @@ KNet  CLI is a primary interface for the user to Create/delete/manipulate the To
 
 Start the CLI
 --------------
-Before start the CLI, run cleanup script(which cleans the existing nodes/switches if any).
-
 .. code-block:: bash
 
-	./cleanup.sh 
+	knet-cli
 
-Screeshot:
 
-.. figure::  imgs/cli/cleanup_s.png
+.. figure::  imgs/quick_start/knet_cli_start_s.png
    :align:   center
 
-Start the CLI as below,
-
-.. code-block:: bash
-
-	python KNet/cli.py
-
-Screeshot:
-
-.. figure::  imgs/cli/cli1_s.png
-   :align:   center
 
 
 Help commands
@@ -85,7 +73,7 @@ CreateTopology
 
 CreateTopology command creates a Topology. The Topology input file is defined in YAML format. User can easily define any complex topology by writing the YAML file.(Refer: Topology_file section)
 
-There are few example topologies availale in  https://github.com/knetsolutions/KNet/tree/master/examples  in the repository.
+There are few example topologies availale in https://github.com/knetsolutions/knet-example-topologies in the repository.
 
 
 
