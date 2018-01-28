@@ -24,8 +24,10 @@ from jsonschema import validate
 from shutil import copyfile
 
 from KNet.lib.node import Node
+from KNet.lib.router import Router
+
 from KNet.lib.switches import Switch
-from KNet.lib.link import NodeLink, SwitchLink
+from KNet.lib.link import NodeLink, SwitchLink, RouterLink
 from KNet.lib.networks import Network
 from KNet.lib.qos import Qos
 import KNet.lib.schema
@@ -54,6 +56,7 @@ class Topology(Singleton, object):
         self.switchobjs = []
         self.linkobjs = []
         self.networkobjs = []
+        self.routerobjs = []
         self.qos = None
         log.debug("Initializing Topology Object")
 
@@ -105,17 +108,45 @@ class Topology(Singleton, object):
             sobj.create()
             self.switchobjs.append(sobj)
 
+        # create routers
+        log.debug("Topology Creating Routers")
+        for n in tdata["Topology"]["routers"]:
+            # get the network object for the node
+            # net = None
+            # if "network" in n:
+            #    net = self.__getnetwork(n["network"])
+            routerobj = Router(data=n)
+            routerobj.create()
+            self.routerobjs.append(routerobj)
+
         # create links
         log.debug("Topology Creating Links")
         for l in tdata["Topology"]["links"]:
             # creating nodeLinks
             if "nodes" in l:
                 lobj = NodeLink(data=l, qos=self.qos)
+            elif "routers" in l:
+                lobj = RouterLink(data=l, qos=self.qos)
             else:
                 # creating Switch Links
                 lobj = SwitchLink(data=l)
             lobj.create()
             self.linkobjs.append(lobj)
+
+        # Adding Static Routes in the hosts
+        for n in tdata["Topology"]["nodes"]:
+            if "static_routes" in n:
+                for route in n["static_routes"]:
+                    docker.add_static_route(n["name"], route["subnet"],
+                                            route["via"])
+
+        # Adding Static Routes in the routers
+        if "routers" in tdata["Topology"]:
+            for r in tdata["Topology"]["routers"]:
+                if "static_routes" in r:
+                    for route in r["static_routes"]:
+                        docker.add_static_route(r["name"], route["subnet"],
+                                                route["via"])
 
         self.status = "Created"
 
@@ -152,6 +183,11 @@ class Topology(Singleton, object):
             s.delete()
         del self.switchobjs[:]
 
+        log.debug("Deleting Routers")
+        for r in self.routerobjs:
+            r.delete()
+        del self.routerobjs[:]
+
         log.debug("Deleting Links")
         del self.linkobjs[:]
 
@@ -180,10 +216,12 @@ class Topology(Singleton, object):
                                   "Controller": self.controller})
         nodes = utils.format_nodes(self.__getNodeDetails())
         switches = utils.format_switches(self.__getSwitchDetails())
+        routers = utils.format_nodes(self.__getRouterDetails())
         links = utils.format_links(utils.link_t.all())
         result = "Topology \n" + str(topo) + "\n"
         result += "Nodes \n" + str(nodes) + "\n"
         result += "Switches \n" + str(switches) + "\n"
+        result += "Routers \n" + str(routers) + "\n"
         result += "Links \n" + str(links) + "\n"
         log.debug(result)
         return result
@@ -274,6 +312,8 @@ class Topology(Singleton, object):
             nodes.append({"id": node.id, "name": node.name, "icon": "host"})
         for switch in self.switchobjs:
             nodes.append({"id": switch.id, "name": switch.name, "icon": "switch"})
+        for router in self.routerobjs:
+            nodes.append({"id": router.id, "name": router.name, "icon": "router"})           
         for linkobj in self.linkobjs:
             for link in linkobj.links:
                 links.append(link)
@@ -374,6 +414,17 @@ class Topology(Singleton, object):
                            "controller": sw.controller
                            })
         return result
+
+    def __getRouterDetails(self):
+        result = []
+        for router in self.routerobjs:
+            result.append({"name": router.name,
+                           "status": router.status,
+                           "id": router.id,
+                           "image": router.img,
+                           })
+        return result
+
 
     def __getLinkDetails(self):
         result = []

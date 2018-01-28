@@ -71,6 +71,7 @@ db = TinyDB('/tmp/db.json')
 query = Query()
 topology_t = db.table('topology')
 node_t = db.table('node')
+router_t = db.table('router')
 switch_t = db.table('switch')
 link_t = db.table('link')
 network_t = db.table('network')
@@ -78,6 +79,12 @@ qos_t = db.table('qos')
 
 def get_node_data(node_name):
     result = node_t.search(query.name == node_name)
+    # print result
+    return result[0]
+
+
+def get_router_data(router_name):
+    result = router_t.search(query.name == router_name)
     # print result
     return result[0]
 

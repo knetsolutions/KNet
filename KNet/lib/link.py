@@ -19,6 +19,7 @@ from six import add_metaclass, text_type
 import KNet.lib.utils as utils
 import KNet.lib.ovs_cmds as ovs
 import KNet.lib.tc_cmds as tc
+from KNet.lib.logger import logger as log
 
 
 @add_metaclass(abc.ABCMeta)
@@ -86,6 +87,83 @@ class NodeLink(object):
     def delete(self):
         # what to write?
         pass
+
+
+
+
+
+
+
+
+@add_metaclass(abc.ABCMeta)
+class RouterLink(object):
+    def __init__(self, data, qos=None):
+        # self.network = network
+        log.debug("RouterLink Object init" + str(data))
+        self.qos = qos
+        self.switch = data["switches"][0]
+        self.routers = data["routers"]
+        self.links = []
+
+    def __getip(self, interfaces, ifname):
+        for interface in interfaces:
+            if interface["name"] == ifname:
+                return interface["ip"]
+        return None
+
+    def create(self):
+        for router in self.routers:
+            log.debug("Creating RouterLink" + str(router))
+            r = utils.get_router_data(router['name'])
+            # get IP from the router data r for the interface
+            for interface in r['interfaces']:
+                if interface["name"] == router["interface"]:
+                    ip = interface["ip"]
+            log.debug(ip)
+            # create a link node to switch
+            ovs.create_link(self.switch, router["interface"], router['name'],
+                            self.__getip(r['interfaces'], router["interface"]),
+                            None)
+            sourceid = r["id"]
+            # link -target node id
+            s = utils.get_switch_data(self.switch)
+            targetid = s["id"]
+
+            # get the tap interface name
+            tapif = ovs.get_port_name(router["name"], router["interface"])
+
+            # store the link endpoints in array (for UI drawing)
+            self.links.append({"source": sourceid, "target": targetid,
+                               "source-name": router["name"],
+                               "target-name": self.switch})
+
+            # update in DB
+            self.docid = utils.link_t.insert({'id': utils.generate_id(),
+                                              'source': router["name"],
+                                              'target': self.switch,
+                                              'source-id': sourceid,
+                                              'target-id': targetid,
+                                              'if1': router["interface"],
+                                              'if2': tapif,
+                                              'qos': None,
+                                              })
+
+    def getifname(self):
+        for router in self.routers:
+            print ovs.get_port_name(router, "eth1")
+    """
+    def getqos(self, qname):
+        for q in self.qos:
+            if q["name"] == qname:
+                return q
+        return None
+
+    def delete(self):
+        # what to write?
+        pass
+    """
+
+
 
 
 @add_metaclass(abc.ABCMeta)

@@ -20,7 +20,7 @@ from KNet.lib.logger import logger as log
 def create_container(name, img):
     # sudo docker run -itd --name=node1  ubuntu:trusty
     n = "--name=" + name
-    cmd = ['sudo', 'docker', 'run', '-itd', n, img]
+    cmd = ['sudo', 'docker', 'run', '--cap-add=NET_ADMIN', '-itd', n, img]
     return utils.run_cmd(cmd)
 
 
@@ -39,6 +39,13 @@ def run_ping_in_container(name, ip):
     # sudo docker exec -it a3 ping 10.20.20.2 -c 5
     cmd = ['sudo', 'docker', 'exec', '-t', name, 'ping', '-A', '-c', '5', ip]
     return utils.run_cmd(cmd)
+
+def add_static_route(name, subnet, via):
+    # sudo docker exec -it a3 ip route add 10.20.20.0/24 via 10.10.10.1
+    cmd = ['sudo', 'docker', 'exec', '-it', name, 'ip', 'route', 'add', 
+           subnet, 'via', via]
+    return utils.run_cmd(cmd)
+
 
 
 def run_iperfs_in_container(name):
