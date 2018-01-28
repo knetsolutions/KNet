@@ -49,6 +49,63 @@ class Version(Command):
         return t.version()
 
 
+class TcpTest(Command):
+    description = "TcpTest"
+    details = '''
+    Runs IPERF TCP test.
+    Args: source destination  Number-of-connections
+    return: result
+    Example:  TcpTest a1 a2 1
+              TcpTest a1 a2 10
+    '''
+
+    def __validate(self, args):
+        if args and len(args) == 3:
+            return True
+        else:
+            return False
+
+    def __call__(self, args):
+        if not self.__validate(args):
+            err = "Error : Input args \n ********* Help **********\n"+TcpTest.details
+            return err
+        try:
+            result = t.tcptest(args[0], args[1], args[2])
+        except Exception as e:
+            print e.__doc__
+            return e.message
+        return result
+
+
+class UdpTest(Command):
+    description = "UdpTest"
+    details = '''
+    Runs IPERF UDP test.
+    Args: source destination  Bandwitdh(Mbps) Number-of-connections
+    return: result
+    Example:  UdTest a1 a2 10 1
+              UdpTest a1 a2 1 1
+    '''
+
+    def __validate(self, args):
+        if args and len(args) == 4:
+            return True
+        else:
+            return False
+
+    def __call__(self, args):
+        if not self.__validate(args):
+            err = "Error : Input args \n ********* Help **********\n"+UdpTest.details
+            return err
+        try:
+            result = t.udptest(args[0], args[1], args[2], args[3])
+        except Exception as e:
+            print e.__doc__
+            return e.message
+        return result
+
+
+
 class Cleanup(Command):
     description = "Cleanup"
     details = '''
@@ -71,7 +128,7 @@ class CreateTopology(Command):
     '''
 
     def __validate(self, args):
-        if args and args[0]:
+        if args and len(args) == 1:
             return True
         else:
             return False
@@ -232,7 +289,7 @@ class Ping(Command):
     '''
 
     def __validate(self, args):
-        if args and args[0] and args[1]:
+        if args and len(args) == 2:
             return True
         else:
             return False

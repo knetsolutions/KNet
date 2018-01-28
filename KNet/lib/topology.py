@@ -228,7 +228,7 @@ class Topology(Singleton, object):
                 if snode.id != dnode.id:
                     print "Ping from node " + snode.name + " to " + dnode.name
                     print docker.run_ping_in_container(snode.name,
-                                                 dnode.ip.split('/')[0])        
+                                                       dnode.ip.split('/')[0])       
                     print "---------------------------------------------------"
 
     def version(self):
@@ -238,6 +238,31 @@ class Topology(Singleton, object):
         cpath = os.path.dirname(os.path.abspath(__file__)) + "/cleanup.sh"
         cmd = ['sh', cpath]
         return utils.run_cmd(cmd)
+
+    def tcptest(self, srcnode, destnode, connections):
+        # Run tcp server in destnode
+        docker.run_iperfs_in_container(destnode)
+
+        # Run tcp client in srcnode
+        serverip = self.__get_node_ip(destnode)
+        docker.run_iperfc_in_container(srcnode, serverip, connections)
+
+        # iperf client process automatically exits, so no need to kill
+        # kill iperf server proecess in destnode
+        docker.run_pkill_in_container(destnode, "iperf")
+
+    def udptest(self, srcnode, destnode, bandwidth, connections):
+        # Run tcp server in destnode
+        docker.run_iperf_udps_in_container(destnode)
+
+        # Run tcp client in srcnode
+        serverip = self.__get_node_ip(destnode)
+        docker.run_iperf_udpc_in_container(srcnode, serverip, bandwidth, connections)
+
+        # iperf client process automatically exits, so no need to kill
+        # kill iperf server proecess in destnode
+        docker.run_pkill_in_container(destnode, "iperf")
+
 
     # private functions
     def __write_ui_data(self):
@@ -299,6 +324,10 @@ class Topology(Singleton, object):
             if node.name == nodename:
                 return node
         return None
+
+    def __get_node_ip(self, nodename):
+        node = self.__getNodebyName(nodename)
+        return node.ip.split('/')[0]
 
     def __getSwitchbyName(self, swname):
         for sw in self.switchobjs:

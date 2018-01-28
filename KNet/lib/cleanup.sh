@@ -45,9 +45,9 @@ echo "Cleaning the DB file ...."
 rm -rf /tmp/db.json
 
 #cleaning the log file
-echo "Remove the log file..."
-cp -rf /tmp/KNet.log /tmp/KNet.log.1
-rm -rf /tmp/KNet.log
+#echo "Remove the log file..."
+#cp -rf /tmp/KNet.log /tmp/KNet.log.1
+#rm -rf /tmp/KNet.log
 
 #cleaning the tmp files
 rm -rf "$dockerfile"

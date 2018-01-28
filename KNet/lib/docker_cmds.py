@@ -14,7 +14,8 @@
 '''
 import sys
 import KNet.lib.utils as utils
-
+import os
+from KNet.lib.logger import logger as log
 
 def create_container(name, img):
     # sudo docker run -itd --name=node1  ubuntu:trusty
@@ -36,8 +37,44 @@ def delete_container(name):
 
 def run_ping_in_container(name, ip):
     # sudo docker exec -it a3 ping 10.20.20.2 -c 5
-    cmd = ['sudo', 'docker', 'exec', '-it', name, 'ping', '-A', '-c', '5', ip]
+    cmd = ['sudo', 'docker', 'exec', '-t', name, 'ping', '-A', '-c', '5', ip]
     return utils.run_cmd(cmd)
+
+
+def run_iperfs_in_container(name):
+    # sudo docker exec -it a3 iperf -s &
+    # note: background process doesnt work in utils.run_cmd
+    cmd = "sudo docker exec -t " + name + "  iperf -s &"
+    log.debug(cmd)
+    return os.system(cmd)
+
+def run_iperf_udps_in_container(name):
+    # sudo docker exec -it a3 iperf -s &
+    # note: background process doesnt work in utils.run_cmd
+    cmd = "sudo docker exec -t " + name + "  iperf -u -s &"
+    log.debug(cmd)
+    return os.system(cmd)
+
+def run_iperf_udpc_in_container(name, serverip, bandwidth, connections):
+    # sudo docker exec -it a3 iperf -c 10.10.10.1 -P 5
+    bandwidth = str(bandwidth) + "m"
+    cmd = ['sudo', 'docker', 'exec', '-t', name, 'iperf', '-u', '-c',
+           serverip, '-b', bandwidth, '-P', connections]
+    return utils.run_cmd(cmd)
+
+
+def run_iperfc_in_container(name, serverip, connections=1):
+    # sudo docker exec -it a3 iperf -c 10.10.10.1 -P 5
+    cmd = ['sudo', 'docker', 'exec', '-t', name, 'iperf', '-c',
+           serverip, '-P', connections]
+    return utils.run_cmd(cmd)
+
+
+def run_pkill_in_container(name, pname):
+    # sudo docker exec -it a3 pkill -9 iperf
+    cmd = ['sudo', 'docker', 'exec', '-t', name, 'pkill', '-9', pname]
+    return utils.run_cmd(cmd)
+
 
 # Not used
 def verify_image_exits(img):
