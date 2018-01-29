@@ -39,7 +39,7 @@ from KNet.lib.schema import Topology_schema as schema
 import KNet.lib.docker_cmds as docker
 
 UI_DATAFILE = "/tmp/data.js"
-VERSION = "1.0.2"
+VERSION = "1.0.5"
 
 
 @add_metaclass(abc.ABCMeta)
@@ -108,16 +108,13 @@ class Topology(Singleton, object):
             sobj.create()
             self.switchobjs.append(sobj)
 
-        # create routers
-        log.debug("Topology Creating Routers")
-        for n in tdata["Topology"]["routers"]:
-            # get the network object for the node
-            # net = None
-            # if "network" in n:
-            #    net = self.__getnetwork(n["network"])
-            routerobj = Router(data=n)
-            routerobj.create()
-            self.routerobjs.append(routerobj)
+        if "routers" in tdata["Topology"]:
+            # create routers
+            log.debug("Topology Creating Routers")
+            for n in tdata["Topology"]["routers"]:
+                routerobj = Router(data=n)
+                routerobj.create()
+                self.routerobjs.append(routerobj)
 
         # create links
         log.debug("Topology Creating Links")
