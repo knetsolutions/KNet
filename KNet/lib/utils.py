@@ -58,7 +58,10 @@ def reset_id():
 def run_cmd(cmd):
     try:
         log.debug(str(cmd))
-        return subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        log.debug(output)
+        return output
+        #return subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as ex:
         if ex.returncode == 255:
             raise RuntimeWarning(ex.output.strip())

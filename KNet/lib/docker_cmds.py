@@ -82,6 +82,12 @@ def run_pkill_in_container(name, pname):
     cmd = ['sudo', 'docker', 'exec', '-t', name, 'pkill', '-9', pname]
     return utils.run_cmd(cmd)
 
+def run_cmd_in_container(args):
+    cmd = ['sudo', 'docker', 'exec', '-t'] + args
+    output = utils.run_cmd(cmd)
+    print output
+    return 
+
 
 # Not used
 def verify_image_exits(img):

@@ -77,6 +77,37 @@ class TcpTest(Command):
         return result
 
 
+
+
+class Exec(Command):
+    description = "Execute commands in the node"
+    details = '''
+    Execute given command in the node.
+    Args: nodename   command to run
+    return: result
+    Example:  Exec a1 ifconfig
+              Exec a1 traceroute 10.1.1.2
+              Exec a1 ping 10.1.1.3 -c 5
+    '''
+
+    def __validate(self, args):
+        if args and len(args) > 1:
+            return True
+        else:
+            return False
+
+    def __call__(self, args):
+        if not self.__validate(args):
+            err = "Error : Input args \n ********* Help **********\n"+Exec.details
+            return err
+        try:
+            result = t.run(args)
+        except Exception as e:
+            print e.__doc__
+            return e.message
+        return result
+
+
 class UdpTest(Command):
     description = "UdpTest"
     details = '''

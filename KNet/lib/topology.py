@@ -22,7 +22,7 @@ import json
 import jsonschema
 from jsonschema import validate
 from shutil import copyfile
-
+import time
 from KNet.lib.node import Node
 from KNet.lib.router import Router
 
@@ -130,6 +130,8 @@ class Topology(Singleton, object):
             lobj.create()
             self.linkobjs.append(lobj)
 
+        log.debug("Wait for 30 seconds for ating Links")
+        time.sleep(30)
         # Adding Static Routes in the hosts
         for n in tdata["Topology"]["nodes"]:
             if "static_routes" in n:
@@ -285,6 +287,11 @@ class Topology(Singleton, object):
         # iperf client process automatically exits, so no need to kill
         # kill iperf server proecess in destnode
         docker.run_pkill_in_container(destnode, "iperf")
+
+
+
+    def run(self, args):
+        docker.run_cmd_in_container(args)
 
     def udptest(self, srcnode, destnode, bandwidth, connections):
         # Run tcp server in destnode
