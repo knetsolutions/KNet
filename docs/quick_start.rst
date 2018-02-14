@@ -30,6 +30,7 @@ We have used  Ubuntu 16.04 OS for the below demonstations. (The procedure is sam
 .. figure::  imgs/quick_start/ubuntuversion_s.png
    :align:   center
 
+**The current released version is 1.0.6**
 
 Installation
 -------------
@@ -101,10 +102,18 @@ Create a sample Topology and Testing
 -------------------------------------
 Now Let us Create the Sample Star Topology with RYU SDN Controller.
 
+Topology should be defined in simple YAML file(its just a text file representing the topology).
+
 Example topology files are available in  https://github.com/knetsolutions/knet-example-topologies
 
+SDN example topologies  are available inside SDN folder of the knet-example-topologies repo.
 
-Star Topology file is available in topo0.yaml
+Example SDN topologies are available for 
+1. Linear
+2. Star
+3. Tree
+4. Mesh
+5. Partial Mesh
 
 
 Setup the RYU SDN Controller
@@ -182,15 +191,6 @@ CLI
    :align:   center	
 
 
-How to Run the IPERF Tests:
-------------------------------------
-
-1. Login to the Node and Install the iperf package
-	Refer :ref:`docker-install-package`.
-2. Execute the iperf commands in the nodes.
-
-
-
 Delete the Topology
 ---------------------
 
@@ -204,4 +204,21 @@ Delete the Topology
    :align:   center	
 
 2. Exit from the CLI by "Exit"  Command
+
+
+
+Cleanup
+-------------------
+
+Cleanup command cleans up the Docker container, ovs switches, log files, db records etc. 
+
+1. In the KNet CLI, Execute the below command 
+
+.. code-block:: bash
+
+	Cleanup
+
+
+2. Exit from the CLI by "Exit"  Command
+
 

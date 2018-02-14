@@ -67,6 +67,11 @@ Screeshot:
    :align:   center
 
 
+Version
+---------
+Shows the version of KNet.
+
+
 
 CreateTopology
 ---------------
@@ -113,15 +118,6 @@ PingAll command, generates 5 ping packets from each node to all other nodes.
 .. figure::  imgs/cli/cli_pingall_s.png
    :align:   center
 
-PingAll
----------
-
-PingAll command, generates 5 ping packets from each node to all other nodes.
-
-.. figure::  imgs/cli/cli_pingall_s.png
-   :align:   center
-
-
 
 Ping
 ---------
@@ -137,6 +133,54 @@ Ping command, generates 5 ping packets from source node to destination node.
 Screenshot:
 
 .. figure::  imgs/cli/cli_ping_s.png
+   :align:   center
+
+
+Exec
+---------
+Exec command, helps to execute the system command in the node.
+
+Syntax:
+
+.. code-block:: bash
+
+	Exec  < node>  <command>
+
+For example, you want to know the arp entries of the host
+
+.. code-block:: bash
+
+	Exec  a1 arp -a
+	Exec  a1 ifconfig
+	Exec  a1 ip route
+	Exec  a1 traceroute 10.1.1.2 
+
+TcpTest
+-------
+Helps to perform the Iperf TCP traffic test between two nodes
+
+Refer:  Traffic Test session for mode details
+
+
+UdpTest
+---------
+Helps to perform the Iperf UDP traffic test between two nodes
+
+Refer:  Traffic Test session for mode details
+
+
+DeleteTopology
+--------------
+
+DeleteTopology command deletes the entier topology(nodes, switches, links)
+
+.. code-block:: bash
+
+	DeleteTopology
+
+Screenshot:
+
+.. figure::  imgs/cli/cli_deletetopo_s.png
    :align:   center
 
 
@@ -178,20 +222,3 @@ Screenshot:
 
 .. figure::  imgs/cli/cli_downlink_s.png
    :align:   center
-
-
-
-DeleteTopology
---------------
-
-DeleteTopology command deletes the entier topology(nodes, switches, links)
-
-.. code-block:: bash
-
-	DeleteTopology
-
-Screenshot:
-
-.. figure::  imgs/cli/cli_deletetopo_s.png
-   :align:   center
-

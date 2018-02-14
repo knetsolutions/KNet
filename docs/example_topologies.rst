@@ -1,13 +1,29 @@
 Example Topologies
 ===================
 
-`../examples` folder consists of 7 examples topology ìnput file.
+`https://github.com/knetsolutions/knet-example-topologies` repository consists of SDN, and traditional topology ìnput files.
+
+SDN Folder consists of the below topology input files,
+
+1. Simple Topology
+2. Linear1 Topology
+3. Linear2 Topology
+4. Ring Topology
+5. Partial Mesh Topology
+6. Full Mesh Topology
+7. Tree Topology
+
+Traditional Folder consists of 
+
+1. One Network with Hosts and Server
+2. Two Networks with Hosts, Server, Router
+3. WAN Topology with Two Routers, Hosts
 
 
 Star Topology
 -------------
 
-Filename: `topo0.yaml`
+Filename: `simple.yaml`
 
 .. figure::  imgs/topo0.png
    :align:   center
@@ -20,7 +36,7 @@ RYU OpenFlow13 Switch application **simple_switch_13.py** can be used to test th
 
 Linear Topology1
 -----------------
-Filename: `topo1.yaml`
+Filename: `linear1.yaml`
 
 .. figure::  imgs/topo1.png
    :align:   center
@@ -34,7 +50,7 @@ RYU OpenFlow13 Switch application **simple_switch_13.py** can be used to test th
 Linear Topology2
 -----------------
 
-Filename: `topo2.yaml`
+Filename: `linear2.yaml`
 
 .. figure::  imgs/topo2.png
    :align:   center
@@ -45,24 +61,10 @@ This topology consists of 4 nodes, and four switches. Each node is connected in 
 
 RYU OpenFlow13 Switch application **simple_switch_13.py** can be used to test this topology.
 
-Star Topology with QoS
------------------------
-
-Filename: `topo3.yaml`
-
-.. figure::  imgs/topo3.png
-   :align:   center
-
-   Simple Star Topology with QoS.
-
-Qos parameters configured in the Star Topology Links.
-
-RYU OpenFlow13 Switch application **simple_switch_13.py** can be used to test this topology.
-
 Ring Topology
 -----------------------
 
-Filename: `topo4.yaml`
+Filename: `ring.yaml`
 
 .. figure::  imgs/topo4.png
    :align:   center
@@ -78,7 +80,7 @@ This topology forms a loop, hence  RYU STP application **simple_switch_stp_13.py
 Full Mesh Topology 
 -----------------------
 
-Filename: `topo5.yaml`
+Filename: `fmesh.yaml`
 
 .. figure::  imgs/topo5.png
    :align:   center
@@ -92,7 +94,7 @@ This topology forms a loop, hence  RYU STP application **simple_switch_stp_13.py
 Partial Mesh Topology 
 -----------------------
 
-Filename: `topo6.yaml`
+Filename: `pmesh.yaml`
 
 .. figure::  imgs/topo6.png
    :align:   center
@@ -107,7 +109,7 @@ This topology forms a loop, hence  RYU STP application **simple_switch_stp_13.py
 Tree Topology 
 -----------------------
 
-Filename: `topo7.yaml`
+Filename: `tree.yaml`
 
 .. figure::  imgs/topo7.png
    :align:   center

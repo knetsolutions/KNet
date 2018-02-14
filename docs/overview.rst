@@ -24,10 +24,15 @@ Software Defined Networking(SDN) opens the innovation in networking domain. Univ
 
 Building the Network Topology for their research activity is still nightmare.
 
-KNet is Virtual Network Topology Builder, it builds the Network Topology as a real network environment.  It means the Nodes are built with Docker Containers.
+KNet is Virtual Network Topology Builder, it builds the Network Topology as a real network environment.  It means the Nodes are built with Docker Containers. Currently it supports Hosts, Servers, Routers Nodes.
 
-User can install any required packages (apache2,mysql,hacking tools.. etc)
+KNet Virtual Network Topology Builder supports building the Traditional Networks as well as SDN Test bed.
+
+Host is built with basic required tools such as iperf, Traceroute, curl, Hping3. Server is built with apache2 webserver. Router is built with Quagga Router.
+
+User can install any required packages (mysql,hacking tools.. etc) in the nodes.
 User have full control on the nodes to generate the real time original protocol traffic(no simulation).
+
 
 
 Architecture
