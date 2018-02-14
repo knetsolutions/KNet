@@ -23,11 +23,11 @@ import jsonschema
 from jsonschema import validate
 from shutil import copyfile
 import time
-from KNet.lib.node import Node
 from KNet.lib.router import Router
-
+from KNet.lib.host import Host
+from KNet.lib.server import Server
 from KNet.lib.switches import Switch
-from KNet.lib.link import NodeLink, SwitchLink, RouterLink
+from KNet.lib.link import SwitchLink, RouterLink, HostLink, ServerLink
 from KNet.lib.networks import Network
 from KNet.lib.qos import Qos
 import KNet.lib.schema
@@ -39,7 +39,7 @@ from KNet.lib.schema import Topology_schema as schema
 import KNet.lib.docker_cmds as docker
 
 UI_DATAFILE = "/tmp/data.js"
-VERSION = "1.0.5"
+VERSION = "1.0.6"
 
 
 @add_metaclass(abc.ABCMeta)
@@ -52,11 +52,13 @@ class Topology(Singleton, object):
         self.name = None
         self.status = None
         self.controller = None
-        self.nodeobjs = []
+        #self.nodeobjs = []
         self.switchobjs = []
         self.linkobjs = []
         self.networkobjs = []
         self.routerobjs = []
+        self.hostobjs = []
+        self.serverobjs = []
         self.qos = None
         log.debug("Initializing Topology Object")
 
@@ -71,45 +73,55 @@ class Topology(Singleton, object):
             log.error("Topology data schmea validation check failed")
             return {"Error": "Invalid Topology Schema Check Data"}
 
-        # create network
+        # setting the name
         self.name = tdata["Topology"]["name"]
-        self.controller = tdata["Topology"]["controller"]["url"]
 
+        # setting the controller
+        if "controller" in tdata["Topology"]:
+            self.controller = tdata["Topology"]["controller"]["url"]
+
+        '''
         # check network object is present in the topology input
         if "networks" in tdata["Topology"]:
             log.debug("Topology Creating Networks")
             for net in tdata["Topology"]["networks"]:
                 networkobj = Network(net)
                 self.networkobjs.append(networkobj)
-
+        '''
         # qos - doesnt require objects. we need to just pass this
         # complete dict to Linkobj.
+        log.debug("Topology Creating Qos")
         if "qos" in tdata["Topology"]:
             self.qos = tdata["Topology"]["qos"]
 
-        # create nodes
-        log.debug("Topology Creating Nodes")
-        for n in tdata["Topology"]["nodes"]:
-            # get the network object for the node
-            net = None
-            if "network" in n:
-                net = self.__getnetwork(n["network"])
-            nodeobj = Node(data=n, network=net)
-            nodeobj.create()
-            self.nodeobjs.append(nodeobj)
+        # create hosts
+        log.debug("Topology Creating Hosts")
+        for h in tdata["Topology"]["hosts"]:
+            hostobj = Host(data=h)
+            hostobj.create()
+            self.hostobjs.append(hostobj)
+
+        # create servers
+        if "servers" in tdata["Topology"]:
+            log.debug("Topology Creating Servers")
+            for s in tdata["Topology"]["servers"]:
+                serverobj = Server(data=s)
+                serverobj.create()
+                self.serverobjs.append(serverobj)
 
         # Create switches
         log.debug("Topology Creating Switches")
         for s in tdata["Topology"]["switches"]:
             # Take details from global openflow json
             if "openflow" not in s:
-                s["openflow"] = tdata["Topology"]["openflow"]
+                if "openflow" in tdata["Topology"]:
+                    s["openflow"] = tdata["Topology"]["openflow"]
             sobj = Switch(data=s, controller=self.controller)
             sobj.create()
             self.switchobjs.append(sobj)
 
+        # create routers
         if "routers" in tdata["Topology"]:
-            # create routers
             log.debug("Topology Creating Routers")
             for n in tdata["Topology"]["routers"]:
                 routerobj = Router(data=n)
@@ -120,8 +132,10 @@ class Topology(Singleton, object):
         log.debug("Topology Creating Links")
         for l in tdata["Topology"]["links"]:
             # creating nodeLinks
-            if "nodes" in l:
-                lobj = NodeLink(data=l, qos=self.qos)
+            if "hosts" in l:
+                lobj = HostLink(data=l, qos=self.qos)
+            elif "servers" in l:
+                lobj = ServerLink(data=l, qos=self.qos)
             elif "routers" in l:
                 lobj = RouterLink(data=l, qos=self.qos)
             else:
@@ -130,14 +144,23 @@ class Topology(Singleton, object):
             lobj.create()
             self.linkobjs.append(lobj)
 
-        log.debug("Wait for 30 seconds for ating Links")
-        time.sleep(30)
+        log.debug("Wait for 2 seconds for bring Links")
+        time.sleep(2)
+
         # Adding Static Routes in the hosts
-        for n in tdata["Topology"]["nodes"]:
+        for n in tdata["Topology"]["hosts"]:
             if "static_routes" in n:
                 for route in n["static_routes"]:
                     docker.add_static_route(n["name"], route["subnet"],
                                             route["via"])
+
+        # Adding Static Routes in the servers
+        if "servers" in tdata["Topology"]:
+            for n in tdata["Topology"]["servers"]:
+                if "static_routes" in n:
+                    for route in n["static_routes"]:
+                        docker.add_static_route(n["name"], route["subnet"],
+                                                route["via"])
 
         # Adding Static Routes in the routers
         if "routers" in tdata["Topology"]:
@@ -148,7 +171,6 @@ class Topology(Singleton, object):
                                                 route["via"])
 
         self.status = "Created"
-
         log.debug("Topology Creation Completed")
 
         # Todo - Store Network, Qos in DB??
@@ -161,7 +183,7 @@ class Topology(Singleton, object):
         res = utils.format_createtopo({"Name": self.name,
                                        "Status": self.status,
                                        "Controller": self.controller,
-                                       "Nodes": self.__getNodeNames(),
+                                       "Hosts": self.__getHostNames(),
                                        "Switches": self.__getSwitchNames(),
                                        "Links": self.__getLinks()})
         log.debug(res)
@@ -172,10 +194,15 @@ class Topology(Singleton, object):
             log.warn("No Topology Exists for delete")
             return "No Topology Exists "
 
-        log.debug("Deleting nodes")
-        for n in self.nodeobjs:
-            n.delete()
-        del self.nodeobjs[:]
+        log.debug("Deleting hosts")
+        for h in self.hostobjs:
+            h.delete()
+        del self.hostobjs[:]
+
+        log.debug("Deleting servers")
+        for s in self.serverobjs:
+            s.delete()
+        del self.serverobjs[:]
 
         log.debug("Deleting switches")
         for s in self.switchobjs:
@@ -213,12 +240,14 @@ class Topology(Singleton, object):
         topo = utils.format_topo({"Name": self.name,
                                   "Status": self.status,
                                   "Controller": self.controller})
-        nodes = utils.format_nodes(self.__getNodeDetails())
+        hosts = utils.format_nodes(self.__getHostDetails())
+        servers = utils.format_nodes(self.__getServerDetails())
         switches = utils.format_switches(self.__getSwitchDetails())
         routers = utils.format_nodes(self.__getRouterDetails())
         links = utils.format_links(utils.link_t.all())
         result = "Topology \n" + str(topo) + "\n"
-        result += "Nodes \n" + str(nodes) + "\n"
+        result += "Hosts \n" + str(hosts) + "\n"
+        result += "Servers \n" + str(servers) + "\n"
         result += "Switches \n" + str(switches) + "\n"
         result += "Routers \n" + str(routers) + "\n"
         result += "Links \n" + str(links) + "\n"
@@ -254,18 +283,20 @@ class Topology(Singleton, object):
         if snode is not None and dnode is not None:
             print "Ping from node " + snode.name + " to " + dnode.name
             print docker.run_ping_in_container(snode.name,
-                                               dnode.ip.split('/')[0])
+                                               dnode.interfaces[0]["ip"].split('/')[0])
             print "---------------------------------------------------"
         else:
             print "Node not found"
 
     def pingAll(self):
-        for snode in self.nodeobjs:
-            for dnode in self.nodeobjs:
+        nodeobjs = self.hostobjs + self.serverobjs + self.routerobjs
+        print nodeobjs
+        for snode in nodeobjs:
+            for dnode in nodeobjs:
                 if snode.id != dnode.id:
                     print "Ping from node " + snode.name + " to " + dnode.name
                     print docker.run_ping_in_container(snode.name,
-                                                       dnode.ip.split('/')[0])       
+                                                      dnode.interfaces[0]["ip"].split('/')[0])       
                     print "---------------------------------------------------"
 
     def version(self):
@@ -312,12 +343,16 @@ class Topology(Singleton, object):
         nodes = []
         links = []
 
-        for node in self.nodeobjs:
-            nodes.append({"id": node.id, "name": node.name, "icon": "host"})
+        for host in self.hostobjs:
+            nodes.append({"id": host.id, "name": host.name, "icon": "host"})
+        for server in self.serverobjs:
+            nodes.append({"id": server.id, "name": server.name, "icon": "server"})
         for switch in self.switchobjs:
             nodes.append({"id": switch.id, "name": switch.name, "icon": "switch"})
         for router in self.routerobjs:
-            nodes.append({"id": router.id, "name": router.name, "icon": "router"})           
+            nodes.append({"id": router.id, "name": router.name, "icon": "router"})
+
+
         for linkobj in self.linkobjs:
             for link in linkobj.links:
                 links.append(link)
@@ -364,14 +399,20 @@ class Topology(Singleton, object):
         return None
 
     def __getNodebyName(self, nodename):
-        for node in self.nodeobjs:
-            if node.name == nodename:
-                return node
+        for host in self.hostobjs:
+            if host.name == nodename:
+                return host
+        for server in self.serverobjs:
+            if server.name == nodename:
+                return server
+        for router in self.routerobjs:
+            if router.name == nodename:
+                return router
         return None
 
     def __get_node_ip(self, nodename):
         node = self.__getNodebyName(nodename)
-        return node.ip.split('/')[0]
+        return node.interfaces[0]["ip"].split('/')[0]
 
     def __getSwitchbyName(self, swname):
         for sw in self.switchobjs:
@@ -381,8 +422,8 @@ class Topology(Singleton, object):
 
     # functions for collecting the Data for CLI dsplay
 
-    def __getNodeNames(self):
-        return [node.name for node in self.nodeobjs]
+    def __getHostNames(self):
+        return [host.name for host in self.hostobjs]
 
     def __getSwitchNames(self):
         return [sw.name for sw in self.switchobjs]
@@ -395,17 +436,29 @@ class Topology(Singleton, object):
                                link["target-name"])
         return results
 
-    def __getNodeDetails(self):
+    def __getHostDetails(self):
         result = []
-        for node in self.nodeobjs:
-            result.append({"name": node.name,
-                           "status": node.status,
-                           "id": node.id,
-                           "image": node.img,
-                           "ip": node.ip,
-                           "mac": node.mac
+        for host in self.hostobjs:
+            result.append({"name": host.name,
+                           "status": host.status,
+                           "id": host.id,
+                           "image": host.img,
+                           #"ip": host.ip,
+                           #"mac": host.mac
                            })
+        return result
 
+
+    def __getServerDetails(self):
+        result = []
+        for s in self.serverobjs:
+            result.append({"name": s.name,
+                           "status": s.status,
+                           "id": s.id,
+                           "image": s.img,
+                           #"ip": host.ip,
+                           #"mac": host.mac
+                           })
         return result
 
     def __getSwitchDetails(self):

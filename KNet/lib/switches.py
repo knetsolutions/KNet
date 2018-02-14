@@ -26,7 +26,10 @@ class Switch(object):
     def __init__(self, data, controller):
         self.id = utils.generate_id()
         self.name = data["name"]
-        self.version = str(data["openflow"]["version"])
+        if "openflow" in data:
+          self.version = str(data["openflow"]["version"])
+        else:
+          self.version = None
         self.controller = controller
         self.status = "initialized"
         if "datapathid" in data:
@@ -41,12 +44,13 @@ class Switch(object):
                                             'status': self.status})
 
     def create(self):
-        # controller format:
-        if not ovs.check_controller_format(self.controller):
-            return False
         ovs.create_bridge(self.name)
-        ovs.set_controller(self.name, self.controller)
-        ovs.set_protocol_version(self.name, str(self.version))
+        # controller format:
+        if self.controller:
+            if not ovs.check_controller_format(self.controller):
+                return False
+            ovs.set_controller(self.name, self.controller)
+            ovs.set_protocol_version(self.name, str(self.version))
         ovs.set_datapath_id(self.name, self.datapathid)
         # Update theDB
         self.status = "created"

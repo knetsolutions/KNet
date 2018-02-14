@@ -21,26 +21,18 @@ import KNet.lib.docker_cmds as docker
 
 
 @add_metaclass(abc.ABCMeta)
-class Node(object):
-    def __init__(self, data, network):
-        self.uuid = None
+class Server(object):
+    def __init__(self, data):
         self.id = utils.generate_id()
         self.name = data["name"]
         self.img = data["image"]
         self.status = "initialized"
-        if "mac" in data:
-            self.mac = data["mac"]
-        else:
-            self.mac = None
+        self.interfaces = data["interfaces"]
 
-        if 'ip' in data:
-            self.ip = data["ip"]
-        else:
-            self.ip = network.getip()
         # DB Updation
-        self.docid = utils.node_t.insert({'id': self.id, 'name': self.name,
-                                          'img': self.img, 'ip': self.ip,
-                                          'mac': self.mac,
+        self.docid = utils.server_t.insert({'id': self.id, 'name': self.name,
+                                          'img': self.img,
+                                          'interfaces': self.interfaces,
                                           'status': self.status})
         # print self.docid
 
@@ -49,15 +41,14 @@ class Node(object):
         self.uuid = docker.create_container(self.name, self.img)
         self.status = "created"
         # update the status in DB
-        utils.node_t.update({'status': self.status}, doc_ids=[self.docid])
+        utils.server_t.update({'status': self.status}, doc_ids=[self.docid])
 
     def delete(self):
         docker.stop_container(self.name)
         docker.delete_container(self.name)
         self.status = "deleted"
         # update the status in DB
-        # utils.node_t.update({'status': self.status}, doc_ids=[self.docid])
-        utils.node_t.remove(doc_ids=[self.docid])
+        utils.server_t.remove(doc_ids=[self.docid])
 
     def get(self):
-        return utils.node_t.get(doc_id=self.docid)
+        return utils.server_t.get(doc_id=self.docid)

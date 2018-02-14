@@ -21,7 +21,7 @@ import KNet.lib.ovs_cmds as ovs
 import KNet.lib.tc_cmds as tc
 from KNet.lib.logger import logger as log
 
-
+'''
 @add_metaclass(abc.ABCMeta)
 class NodeLink(object):
     def __init__(self, data, qos=None):
@@ -87,12 +87,160 @@ class NodeLink(object):
     def delete(self):
         # what to write?
         pass
+'''
+
+
+@add_metaclass(abc.ABCMeta)
+class HostLink(object):
+    def __init__(self, data, qos=None):
+        # self.network = network
+        log.debug("HostLink Object init" + str(data))
+        self.qos = qos
+        self.switch = data["switches"][0]
+        self.hosts = data["hosts"]
+        self.links = []
+
+    def __getip(self, interfaces, ifname):
+        for interface in interfaces:
+            if interface["name"] == ifname:
+                return interface["ip"]
+        return None
+
+    def create(self):
+        for host in self.hosts:
+            log.debug("Creating HostLink" + str(host))
+            r = utils.get_host_data(host['name'])
+            # get IP from the router data r for the interface
+            for interface in r['interfaces']:
+                if interface["name"] == host["interface"]:
+                    ip = interface["ip"]
+            log.debug(ip)
+            # create a link node to switch
+            ovs.create_link(self.switch, host["interface"], host['name'],
+                            self.__getip(r['interfaces'], host["interface"]),
+                            None)
+
+            # get the tap interface name
+            tapif = ovs.get_port_name(host["name"], host["interface"])
+            # apply the Qos to the interface
+            if "qos" in host:
+                qos = self.getqos(host["qos"])
+                tc.config_qos(tapif, qos)
+
+            sourceid = r["id"]
+            # link -target node id
+            s = utils.get_switch_data(self.switch)
+            targetid = s["id"]
+
+            # get the tap interface name
+            #tapif = ovs.get_port_name(host["name"], host["interface"])
+
+            # store the link endpoints in array (for UI drawing)
+            self.links.append({"source": sourceid, "target": targetid,
+                               "source-name": host["name"],
+                               "target-name": self.switch})
+
+            # update in DB
+            self.docid = utils.link_t.insert({'id': utils.generate_id(),
+                                              'source': host["name"],
+                                              'target': self.switch,
+                                              'source-id': sourceid,
+                                              'target-id': targetid,
+                                              'if1': host["interface"],
+                                              'if2': tapif,
+                                              'qos': None,
+                                              })
+
+    def getifname(self):
+        for router in self.routers:
+            print ovs.get_port_name(router, "eth1")
+
+    def getqos(self, qname):
+        for q in self.qos:
+            if q["name"] == qname:
+                return q
+        return None
+
+    def delete(self):
+        # what to write?
+        pass
 
 
 
 
+@add_metaclass(abc.ABCMeta)
+class ServerLink(object):
+    def __init__(self, data, qos=None):
+        # self.network = network
+        log.debug("ServerLink Object init" + str(data))
+        self.qos = qos
+        self.switch = data["switches"][0]
+        self.servers = data["servers"]
+        self.links = []
 
+    def __getip(self, interfaces, ifname):
+        for interface in interfaces:
+            if interface["name"] == ifname:
+                return interface["ip"]
+        return None
 
+    def create(self):
+        for server in self.servers:
+            log.debug("Creating ServerLink" + str(server))
+            r = utils.get_server_data(server['name'])
+            # get IP from the router data r for the interface
+            for interface in r['interfaces']:
+                if interface["name"] == server["interface"]:
+                    ip = interface["ip"]
+            log.debug(ip)
+            # create a link node to switch
+            ovs.create_link(self.switch, server["interface"], server['name'],
+                            self.__getip(r['interfaces'], server["interface"]),
+                            None)
+            # get the tap interface name
+            tapif = ovs.get_port_name(server["name"], server["interface"])
+            # apply the Qos to the interface
+            if "qos" in server:
+                qos = self.getqos(server["qos"])
+                tc.config_qos(tapif, qos)
+
+            sourceid = r["id"]
+            # link -target node id
+            s = utils.get_switch_data(self.switch)
+            targetid = s["id"]
+
+            # get the tap interface name
+            tapif = ovs.get_port_name(server["name"], server["interface"])
+
+            # store the link endpoints in array (for UI drawing)
+            self.links.append({"source": sourceid, "target": targetid,
+                               "source-name": server["name"],
+                               "target-name": self.switch})
+
+            # update in DB
+            self.docid = utils.link_t.insert({'id': utils.generate_id(),
+                                              'source': server["name"],
+                                              'target': self.switch,
+                                              'source-id': sourceid,
+                                              'target-id': targetid,
+                                              'if1': server["interface"],
+                                              'if2': tapif,
+                                              'qos': None,
+                                              })
+
+    def getifname(self):
+        for server in self.servers:
+            print ovs.get_port_name(server, "eth1")
+
+    def getqos(self, qname):
+        for q in self.qos:
+            if q["name"] == qname:
+                return q
+        return None
+
+    def delete(self):
+        # what to write?
+        pass
 
 
 @add_metaclass(abc.ABCMeta)
@@ -124,6 +272,14 @@ class RouterLink(object):
             ovs.create_link(self.switch, router["interface"], router['name'],
                             self.__getip(r['interfaces'], router["interface"]),
                             None)
+
+            # get the tap interface name
+            tapif = ovs.get_port_name(router["name"], router["interface"])
+            # apply the Qos to the interface
+            if "qos" in router:
+                qos = self.getqos(router["qos"])
+                tc.config_qos(tapif, qos)
+
             sourceid = r["id"]
             # link -target node id
             s = utils.get_switch_data(self.switch)
@@ -151,7 +307,7 @@ class RouterLink(object):
     def getifname(self):
         for router in self.routers:
             print ovs.get_port_name(router, "eth1")
-    """
+
     def getqos(self, qname):
         for q in self.qos:
             if q["name"] == qname:
@@ -161,7 +317,6 @@ class RouterLink(object):
     def delete(self):
         # what to write?
         pass
-    """
 
 
 

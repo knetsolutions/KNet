@@ -73,6 +73,8 @@ def run_cmd(cmd):
 db = TinyDB('/tmp/db.json')
 query = Query()
 topology_t = db.table('topology')
+host_t = db.table('host')
+server_t = db.table('server')
 node_t = db.table('node')
 router_t = db.table('router')
 switch_t = db.table('switch')
@@ -92,6 +94,16 @@ def get_router_data(router_name):
     return result[0]
 
 
+def get_host_data(host_name):
+    result = host_t.search(query.name == host_name)
+    # print result
+    return result[0]
+
+def get_server_data(server_name):
+    result = server_t.search(query.name == server_name)
+    # print result
+    return result[0]
+
 def get_switch_data(switch_name):
     result = switch_t.search(query.name == switch_name)
     # print result
@@ -109,6 +121,7 @@ def purge_db():
 #Pretty  Print Interface
 
 def format_createtopo(data):
+    log.debug(str(data))
     if not data:
         return ""
     table = BeautifulTable(max_width=120)
@@ -121,7 +134,7 @@ def format_createtopo(data):
     table.column_widths["Name"] = 10
     table.column_widths["Status"] = 10
     table.column_widths["Controller"] = 10
-    table.column_widths["Nodes"] = 15
+    table.column_widths["Hosts"] = 15
     table.column_widths["Switches"] = 15 
     table.column_widths["Links"] = 20
     table.append_row(row)

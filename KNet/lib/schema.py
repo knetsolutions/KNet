@@ -31,13 +31,13 @@ Topology_schema = {
                         "version": {"type": "number"}
                         }
                 },      
-                "nodes": {
+                "hosts": {
                     "type": "array",
                     "properties": {
                         "name": {"type": "string"},
                         "image": {"type": "string"}
                     }
-                },  # end of nodes
+                },  # end of hosts
                 "switches": {
                     "type": "array",
                     "properties": {
