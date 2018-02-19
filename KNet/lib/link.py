@@ -103,22 +103,19 @@ class HostLink(object):
     def __getip(self, interfaces, ifname):
         for interface in interfaces:
             if interface["name"] == ifname:
-                return interface["ip"]
+                return interface["ip"], interface["mac"]
         return None
 
     def create(self):
         for host in self.hosts:
             log.debug("Creating HostLink" + str(host))
             r = utils.get_host_data(host['name'])
-            # get IP from the router data r for the interface
-            for interface in r['interfaces']:
-                if interface["name"] == host["interface"]:
-                    ip = interface["ip"]
+            ip, mac = self.__getip(r['interfaces'], host["interface"])
             log.debug(ip)
+            log.debug(mac)
             # create a link node to switch
             ovs.create_link(self.switch, host["interface"], host['name'],
-                            self.__getip(r['interfaces'], host["interface"]),
-                            None)
+                            ip, mac)
 
             # get the tap interface name
             tapif = ovs.get_port_name(host["name"], host["interface"])
@@ -181,22 +178,20 @@ class ServerLink(object):
     def __getip(self, interfaces, ifname):
         for interface in interfaces:
             if interface["name"] == ifname:
-                return interface["ip"]
+                return interface["ip"], interface["mac"]
         return None
 
     def create(self):
         for server in self.servers:
             log.debug("Creating ServerLink" + str(server))
             r = utils.get_server_data(server['name'])
-            # get IP from the router data r for the interface
-            for interface in r['interfaces']:
-                if interface["name"] == server["interface"]:
-                    ip = interface["ip"]
+
+            ip, mac = self.__getip(r['interfaces'], server["interface"])
             log.debug(ip)
+            log.debug(mac)
             # create a link node to switch
             ovs.create_link(self.switch, server["interface"], server['name'],
-                            self.__getip(r['interfaces'], server["interface"]),
-                            None)
+                            ip, mac)
             # get the tap interface name
             tapif = ovs.get_port_name(server["name"], server["interface"])
             # apply the Qos to the interface
@@ -256,7 +251,7 @@ class RouterLink(object):
     def __getip(self, interfaces, ifname):
         for interface in interfaces:
             if interface["name"] == ifname:
-                return interface["ip"]
+                return interface["ip"], interface["mac"]
         return None
 
     def create(self):
@@ -264,14 +259,12 @@ class RouterLink(object):
             log.debug("Creating RouterLink" + str(router))
             r = utils.get_router_data(router['name'])
             # get IP from the router data r for the interface
-            for interface in r['interfaces']:
-                if interface["name"] == router["interface"]:
-                    ip = interface["ip"]
+            ip, mac = self.__getip(r['interfaces'], router["interface"])
             log.debug(ip)
+            log.debug(mac)
             # create a link node to switch
             ovs.create_link(self.switch, router["interface"], router['name'],
-                            self.__getip(r['interfaces'], router["interface"]),
-                            None)
+                            ip, mac)
 
             # get the tap interface name
             tapif = ovs.get_port_name(router["name"], router["interface"])

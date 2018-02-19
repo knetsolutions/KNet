@@ -32,6 +32,14 @@ def create_bridge(name):
     # exception to be handled
 
 
+def create_userspace_bridge(name):
+    # sudo ovs-vsctl add-br br1 -- set Bridge br1 datapath_type=netdev
+    cmd = ['sudo', 'ovs-vsctl', 'add-br', name, "--",
+           'set', 'Bridge', name, 'datapath_type=netdev']
+    utils.run_cmd(cmd)
+    # exception to be handled
+
+
 def set_controller(name, controller):
     # sudo ovs-vsctl set-controller ovs-br1 tcp:0.0.0.0:6633
     cmd = ['sudo', 'ovs-vsctl', 'set-controller', name, controller]
