@@ -46,3 +46,4 @@ Welcome to KNet's documentation!
    docker_commands
    ovs_commands
    traffic_tests
+   traditional_networks
