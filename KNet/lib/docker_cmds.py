@@ -20,7 +20,7 @@ from KNet.lib.logger import logger as log
 def create_container(name, img):
     # sudo docker run -itd --name=node1  ubuntu:trusty
     n = "--name=" + name
-    cmd = ['sudo', 'docker', 'run', '--cap-add=NET_ADMIN', '-itd', n, img]
+    cmd = ['sudo', 'docker', 'run', '--cap-add=NET_ADMIN', '--privileged',  '-itd', n, img]
     return utils.run_cmd(cmd)
 
 

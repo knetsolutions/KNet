@@ -258,6 +258,7 @@ class RouterLink(object):
         for router in self.routers:
             log.debug("Creating RouterLink" + str(router))
             r = utils.get_router_data(router['name'])
+            log.debug(r)
             # get IP from the router data r for the interface
             ip, mac = self.__getip(r['interfaces'], router["interface"])
             log.debug(ip)
