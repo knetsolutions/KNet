@@ -53,14 +53,14 @@ class TcpTest(Command):
     description = "TcpTest"
     details = '''
     Runs IPERF TCP test.
-    Args: source destination  Number-of-connections
+    Args: source destination  Number-of-connections   TestTime
     return: result
-    Example:  TcpTest a1 a2 1
-              TcpTest a1 a2 10
+    Example:  TcpTest a1 a2 1  60
+              TcpTest a1 a2 10  300
     '''
 
     def __validate(self, args):
-        if args and len(args) == 3:
+        if args and len(args) > 2:
             return True
         else:
             return False
@@ -70,13 +70,40 @@ class TcpTest(Command):
             err = "Error : Input args \n ********* Help **********\n"+TcpTest.details
             return err
         try:
-            result = t.tcptest(args[0], args[1], args[2])
+            result = t.tcptest(args[0], args[1], args[2], args[3])
         except Exception as e:
             print e.__doc__
             return e.message
         return result
 
 
+
+class TcpTest_Detach(Command):
+    description = "TcpTest"
+    details = '''
+    Runs IPERF TCP test in Detach Mode(Start the test and back to the shell).
+    Args: source destination  Number-of-connections   TestTime
+    return: result
+    Example:  TcpTest_Detach a1 a2 1  60
+              TcpTest_Detach a1 a2 10  300
+    '''
+
+    def __validate(self, args):
+        if args and len(args) > 2:
+            return True
+        else:
+            return False
+
+    def __call__(self, args):
+        if not self.__validate(args):
+            err = "Error : Input args \n ********* Help **********\n"+TcpTest.details
+            return err
+        try:
+            result = t.tcptest_detach(args[0], args[1], args[2], args[3])
+        except Exception as e:
+            print e.__doc__
+            return e.message
+        return result
 
 
 class Exec(Command):
@@ -112,14 +139,14 @@ class UdpTest(Command):
     description = "UdpTest"
     details = '''
     Runs IPERF UDP test.
-    Args: source destination  Bandwitdh(Mbps) Number-of-connections
+    Args: source destination  Bandwitdh(Mbps) Number-of-connections  testtime
     return: result
-    Example:  UdTest a1 a2 10 1
-              UdpTest a1 a2 1 1
+    Example:  UdTest a1 a2 10 1  10
+              UdpTest a1 a2 1 1  300
     '''
 
     def __validate(self, args):
-        if args and len(args) == 4:
+        if args and len(args) > 4:
             return True
         else:
             return False
@@ -129,12 +156,42 @@ class UdpTest(Command):
             err = "Error : Input args \n ********* Help **********\n"+UdpTest.details
             return err
         try:
-            result = t.udptest(args[0], args[1], args[2], args[3])
+            result = t.udptest(args[0], args[1], args[2], args[3], args[4])
         except Exception as e:
             print e.__doc__
             return e.message
         return result
 
+
+
+
+
+class UdpTest_Detach(Command):
+    description = "UdpTest"
+    details = '''
+    Runs IPERF UDP test in Detach Mode.
+    Args: source destination  Bandwitdh(Mbps) Number-of-connections  testtime
+    return: result
+    Example:  UdpTest_Detach a1 a2 10 1  10
+              UdpTest_Detach a1 a2 1 1  300
+    '''
+
+    def __validate(self, args):
+        if args and len(args) > 4:
+            return True
+        else:
+            return False
+
+    def __call__(self, args):
+        if not self.__validate(args):
+            err = "Error : Input args \n ********* Help **********\n"+UdpTest.details
+            return err
+        try:
+            result = t.udptest_detach(args[0], args[1], args[2], args[3], args[4])
+        except Exception as e:
+            print e.__doc__
+            return e.message
+        return result
 
 
 class Cleanup(Command):

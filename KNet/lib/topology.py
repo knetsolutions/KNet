@@ -307,34 +307,61 @@ class Topology(Singleton, object):
         cmd = ['sh', cpath]
         return utils.run_cmd(cmd)
 
-    def tcptest(self, srcnode, destnode, connections):
+    def tcptest(self, srcnode, destnode, connections, t):
         # Run tcp server in destnode
         docker.run_iperfs_in_container(destnode)
 
         # Run tcp client in srcnode
         serverip = self.__get_node_ip(destnode)
-        docker.run_iperfc_in_container(srcnode, serverip, connections)
+        docker.run_iperfc_in_container(srcnode, serverip, connections, t)
 
         # iperf client process automatically exits, so no need to kill
         # kill iperf server proecess in destnode
         docker.run_pkill_in_container(destnode, "iperf")
 
+
+    def tcptest_detach(self, srcnode, destnode, connections, t):
+        # Run tcp server in destnode
+        docker.run_iperfs_in_container(destnode)
+
+        # Run tcp client in srcnode
+        serverip = self.__get_node_ip(destnode)
+        docker.run_iperfc_detach_in_container(srcnode, serverip, connections, t)
+
+        # iperf client process automatically exits, so no need to kill
+        # kill iperf server proecess in destnode
+        #docker.run_pkill_in_container(destnode, "iperf")
 
 
     def run(self, args):
         docker.run_cmd_in_container(args)
 
-    def udptest(self, srcnode, destnode, bandwidth, connections):
+    def udptest(self, srcnode, destnode, bandwidth, connections, t):
         # Run tcp server in destnode
         docker.run_iperf_udps_in_container(destnode)
 
         # Run tcp client in srcnode
         serverip = self.__get_node_ip(destnode)
-        docker.run_iperf_udpc_in_container(srcnode, serverip, bandwidth, connections)
+        docker.run_iperf_udpc_in_container(srcnode, serverip, bandwidth, connections, t)
 
         # iperf client process automatically exits, so no need to kill
         # kill iperf server proecess in destnode
         docker.run_pkill_in_container(destnode, "iperf")
+
+
+
+    def udptest_detach(self, srcnode, destnode, bandwidth, connections, t):
+        # Run tcp server in destnode
+        docker.run_iperf_udps_in_container(destnode)
+
+        # Run tcp client in srcnode
+        serverip = self.__get_node_ip(destnode)
+        docker.run_iperf_udpc_detach_in_container(srcnode, serverip, bandwidth, connections, t)
+
+        # iperf client process automatically exits, so no need to kill
+        # kill iperf server proecess in destnode
+        #docker.run_pkill_in_container(destnode, "iperf")
+
 
 
     # private functions
