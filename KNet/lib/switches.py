@@ -44,8 +44,8 @@ class Switch(object):
                                             'status': self.status})
 
     def create(self):
-        #ovs.create_bridge(self.name)
-        ovs.create_userspace_bridge(self.name)
+        ovs.create_bridge(self.name)
+        #ovs.create_userspace_bridge(self.name)
         # controller format:
         if self.controller:
             if not ovs.check_controller_format(self.controller):

@@ -13,36 +13,50 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# install openvswitch
+
+#!/bin/bash
 export LC_ALL="en_US.UTF-8"
-sudo apt-get update
-sudo apt-get install virtualenv python-dev python-pip build-essential
-sudo apt-get install -y openvswitch-switch
 
-# install Docker
-sudo apt-get -y install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo apt-key fingerprint 0EBFCD88
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-sudo apt-get update
-sudo apt-get install -y docker-ce
 
-# Download the ovs-docker script
-wget https://raw.githubusercontent.com/openvswitch/ovs/master/utilities/ovs-docker
-chmod a+rwx ovs-docker
-sudo cp ovs-docker /usr/bin/.
+function install_deps() {
 
-# Pull the Ubuntu Docker images
-sudo docker pull ubuntu:trusty
-sudo docker pull ubuntu:xenial
-sudo docker pull ubuntu
+	sudo apt-get update
+	sudo apt-get install -y openvswitch-switch python python-dev python-pip build-essential
+	# install Docker
+	sudo apt-get -y install \
+    	apt-transport-https \
+    	ca-certificates \
+    	curl \
+    	software-properties-common
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo apt-key fingerprint 0EBFCD88
+	sudo add-apt-repository \
+   		"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   		$(lsb_release -cs) \
+   		stable"
+	sudo apt-get update
+	sudo apt-get install -y docker-ce
+
+	# Download the ovs-docker script
+	wget https://raw.githubusercontent.com/openvswitch/ovs/master/utilities/ovs-docker
+	chmod a+rwx ovs-docker
+	sudo cp ovs-docker /usr/bin/.
+
+}
+
+
+
+
+function pull_imgs() {
+
+	# Pull the Ubuntu dockeer images
+	#sudo docker pull sureshkvl/host-ubuntu:latest
+	sudo docker pull ubuntu:trusty
+}
+
+
+install_deps
+pull_imgs
 
 #Verify the prerequisites
 sudo docker  --version
