@@ -99,11 +99,22 @@ class HostLink(object):
         self.switch = data["switches"][0]
         self.hosts = data["hosts"]
         self.links = []
-
+    '''
     def __getip(self, interfaces, ifname):
         for interface in interfaces:
             if interface["name"] == ifname:
                 return interface["ip"], interface["mac"]
+        return None
+    '''
+    def __getip(self, interfaces, ifname):
+        ip, mac = None, None
+        for interface in interfaces:
+            if interface["name"] == ifname:
+                if "ip" in interface:
+                    ip = interface["ip"]
+                if "mac" in interface:
+                    mac = interface["mac"]
+                return ip, mac
         return None
 
     def create(self):
@@ -175,10 +186,23 @@ class ServerLink(object):
         self.servers = data["servers"]
         self.links = []
 
+    '''
     def __getip(self, interfaces, ifname):
         for interface in interfaces:
             if interface["name"] == ifname:
                 return interface["ip"], interface["mac"]
+        return None
+    '''
+
+    def __getip(self, interfaces, ifname):
+        ip, mac = None, None
+        for interface in interfaces:
+            if interface["name"] == ifname:
+                if "ip" in interface:
+                    ip = interface["ip"]
+                if "mac" in interface:
+                    mac = interface["mac"]
+                return ip, mac
         return None
 
     def create(self):
@@ -248,11 +272,25 @@ class RouterLink(object):
         self.routers = data["routers"]
         self.links = []
 
+    '''
     def __getip(self, interfaces, ifname):
         for interface in interfaces:
             if interface["name"] == ifname:
                 return interface["ip"], interface["mac"]
         return None
+    '''
+    
+    def __getip(self, interfaces, ifname):
+        ip, mac = None, None
+        for interface in interfaces:
+            if interface["name"] == ifname:
+                if "ip" in interface:
+                    ip = interface["ip"]
+                if "mac" in interface:
+                    mac = interface["mac"]
+                return ip, mac
+        return None
+
 
     def create(self):
         for router in self.routers:
