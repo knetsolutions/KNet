@@ -1,8 +1,9 @@
-
 #!/bin/bash
+
+
 export LC_ALL="en_US.UTF-8"
 
-function check_ubuntu(){
+function check_ubuntu_version(){
 
     if [[ -x $(command -v apt-get 2>/dev/null) ]]; then
         sudo apt-get install -y lsb-release
@@ -14,10 +15,16 @@ function check_ubuntu(){
             echo "Your OS is UBUNTU 16.04. "
             echo "******* Installation starts ........"
         else
-	    die $LINENO "Installation failed... Install supports only Ubuntu 16.04 version."       
+            echo "*************************"            
+            echo $os_VENDOR
+            echo $os_CODENAME
+            echo $os_RELEASE
+            echo "Installation failed... Install supports only Ubuntu 16.04 version."
+            exit 1
         fi
     else
-       die $LINENO "Installation failed... Instal script supports only Ubuntu 16.04 version."
+       echo "Installation failed... Instal script supports only Ubuntu 16.04 version."
+       exit 1
     fi
 }
 
