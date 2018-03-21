@@ -61,11 +61,11 @@ function u16_install_deps() {
 }
 
 
-function u16_pull_imgs() {
+function pull_imgs() {
 	# Pull the Ubuntu dockeer images
 	sudo docker pull knet/host
-        sudo docker pull knet/web
-        sudo docker pull knet/router
+    sudo docker pull knet/web
+    sudo docker pull knet/router
 }
 
 
