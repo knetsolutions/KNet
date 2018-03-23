@@ -3,9 +3,15 @@
 
 # KNet
 
-KNet is a Virtual Network Tobology builder, Primarily used as SDN Test Environment.
+KNet is a Virtual Network Tobology builder. Some of the places, it can be used as,
 
-KNet builds the Virtual Network Topology with Switches, Nodes, Links. KNet uses Dockers for building the Nodes, openvswitch for switches.
+1.  SDN Test Lab.
+2.  Networking Lab
+3.  Security Test Environment 
+4.  Test Environment for Containarized Applications
+
+
+KNet builds the Virtual Network Topology with Switches, Hosts, Routers, Server and . KNet uses Dockers for building the Nodes, openvswitch for switches.
 
 KNet support QoS parameter configuration for the Links, such as bandwidth, latency, jitter and packetloss.
 
