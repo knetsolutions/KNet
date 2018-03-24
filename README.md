@@ -11,13 +11,19 @@ KNet is a Virtual Network Tobology builder. Some of the places, it can be used a
 4.  Test Environment for Containarized Applications
 
 
-KNet builds the Virtual Network Topology with Switches, Hosts, Routers, Server and . KNet uses Dockers for building the Nodes, openvswitch for switches.
+KNet builds the Virtual Network Topology with Switches, Hosts, Routers, and Servers. KNet uses Dockers for building the Nodes, openvswitch for switches.
 
 KNet support QoS parameter configuration for the Links, such as bandwidth, latency, jitter and packetloss.
 
 KNet supports the CLI and Web Interface. 
 
 **Detailed Document is available in [readthedocs](http://knet-topology-builder.readthedocs.io)**
+
+
+![Topology Diagram](docs/imgs/topo0.png?raw=true) 
+
+![Topology Diagram](docs/imgs/routing_img.png?raw=true) 
+
 
 ## Getting Started
 
@@ -45,7 +51,6 @@ pip install knet
 
 ```
 
-Congrats... Installation Completed. 
 This installs the **knet-cli** executable script. Just run **knet-cli** command to get in to CLI.
 
 
@@ -61,18 +66,29 @@ knet-cli
 CLI supports the following commands
 
 ```
-Help
-Cleanup
-CreateTopology
-DeleteTopology
-GetTopology
-DeleteNode
-DeleteSwitch
-AdminDownLink
-AdminUpLink
-PingAll
-Ping
-Exit
+
+Available Commands 
+****************************************************
+Exit -------Exit
+Version -------Version
+TcpTest -------TcpTest
+TcpTest_Detach -------TcpTest
+Exec -------Execute commands in the node
+UdpTest -------UdpTest
+UdpTest_Detach -------UdpTest
+Cleanup -------Cleanup
+CreateTopology -------Create Topology in SDN Test Bed
+DeleteTopology -------Delete the Topology in SDN Test Bed
+GetTopology -------Get the Topology objects in Detail
+DeleteNode -------Delete the Node in the Topology
+DeleteSwitch -------Delete the Switch in the Topology
+AdminDownLink -------Admin down the Link
+AdminUpLink -------Admin up the Link
+PingAll -------Ping All nodes with each other
+Ping -------Ping the soruce node to destination node
+****************************************************
+
+
 ```
 
 To get the detailed help for a command
@@ -91,7 +107,7 @@ Help CreateTopology
 
 **Topology**
 
-Topology consists of Nodes, Switches, Links, QoS, Network Objects. Nodes are build as Docker Containers. Switches are openvswitch switches. 
+Topology consists of Hosts, Servers, Routers, Switches, Links, QoS, . Hosts, Servers, Routers are build as Docker Containers. Switches are openvswitch switches. 
 
 **Topology input file**
 
@@ -100,16 +116,26 @@ User should write Topology in YAML file. This Topology file will be input to the
 Example Topology files(linear,ring,mesh,parial mesh, tree) are available in https://github.com/knetsolutions/knet-example-topologies repository. 
 
 
-**Node**
+**Hosts**
 
-Nodes are build as Docker Containers. ubuntu image is used as default Node image. The default management interface is available for this Node. 
-Node is just a another real Ubuntu Machine. User can install any sofware (apache, mysql, traffic generator, etc) and use it.
+Host is built as Docker Containers. Alpine Linux image is used as base Image. Iperf, tcpdump, ping, traceroute, curl tools are preinstalled.
 
-docker commands can be used to control the nodes.
+
+**Server**
+
+Server is built as Docker Containers. Alpine Linux image is used as base Image. Apache web server is  preinstalled.
+
+
+
+**Router**
+
+ Router is built as Docker Containers. Alpine Linux image is used as base Image. bird routing package is preinstalled.
+
+
 
 **Switch**
 
-Openvswitch is used for building switches.  openswitch commands can be used to debug the switches.
+Openvswitch is used for building switches.  openvswitch kernel data  module is used.
 
 
 
