@@ -25,18 +25,23 @@ KNet  CLI is a primary interface for the user to Create/delete/manipulate the To
 .. code-block:: bash
 
 	Help
+	Version
 	Cleanup
 	CreateTopology
 	DeleteTopology
 	GetTopology
+	PingAll
+	Ping
+	TcpTest
+	TcpTest_Detach
+	Exec
+	UdpTest
+	UdpTest_Detach
 	DeleteNode
 	DeleteSwitch
 	AdminDownLink
 	AdminUpLink
-	PingAll
-	Ping
 	Exit
-
 
 Start the CLI
 --------------
@@ -113,7 +118,7 @@ GetTopology command gives the detailed information of the Topology, such as Node
 PingAll
 ---------
 
-PingAll command, generates 5 ping packets from each node to all other nodes.
+PingAll command, generates 2 ping packets from each node to all other nodes.
 
 .. figure::  imgs/cli/cli_pingall_s.png
    :align:   center
@@ -122,7 +127,7 @@ PingAll command, generates 5 ping packets from each node to all other nodes.
 Ping
 ---------
 
-Ping command, generates 5 ping packets from source node to destination node.
+Ping command, generates 2 ping packets from source node to destination node.
 
 
 .. code-block:: bash
