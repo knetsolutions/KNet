@@ -28,8 +28,11 @@ class Router(object):
         self.name = data["name"]
         self.img = data["image"]
         self.external = False
+        self.mgmtif = False
         if "external" in data:
             self.external = data["external"]
+        if "mgmt-if" in data:
+            self.mgmtif = data["mgmt-if"]
         self.status = "initialized"
         self.interfaces = data["interfaces"]
 
@@ -51,14 +54,15 @@ class Router(object):
                       "-o", "eth0", "-j", "MASQUERADE"]
             res = docker.run_cmd_in_container(natcmd)
             print res
+        elif self.mgmtif is True:
+            self.uuid = docker.create_container(self.name, self.img,
+                                                net="bridge")
         else:
             self.uuid = docker.create_container(self.name, self.img)
 
         self.status = "created"
         # update the status in DB
         utils.router_t.update({'status': self.status}, doc_ids=[self.docid])
-
-
 
 
     def delete(self):
