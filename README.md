@@ -17,7 +17,7 @@ KNet support QoS parameter configuration for the Links, such as bandwidth, laten
 
 KNet supports the CLI and Web Interface. 
 
-## Document
+## Documents
 
 **1.  Detailed Document is available in [readthedocs](http://knet-topology-builder.readthedocs.io)**
 
@@ -25,6 +25,8 @@ KNet supports the CLI and Web Interface.
 **2.  Youtube videos   
 https://www.youtube.com/watch?v=SmWmbAsiimI&list=PLSO7MDepKLNCrHGrRcAyUWWUEFCOrjC4B**
 
+
+## Example Topologies 
 
 ![Topology Diagram](docs/imgs/topo0.png?raw=true) 
 
