@@ -23,14 +23,15 @@ In this QuickStart section, we see few quick steps to install and execute the sa
 
 KNet is compatible with **Python 2.7** only.
 
-KNet is currently supported and Tested in **Ubuntu 16.04 and 14.04** versions.
+KNet is currently supported only in **Ubuntu 16.04** version.
 
-We have used  Ubuntu 16.04 OS for the below demonstations. (The procedure is same for Ubuntu 14.04 OS also)
+We have used  Ubuntu 16.04 OS for the below demonstations.
+
 
 .. figure::  imgs/quick_start/ubuntuversion_s.png
    :align:   center
 
-**The current released version is 1.0.6**
+**The current released version is 1.0.11**
 
 Installation
 -------------
@@ -38,13 +39,9 @@ Installation
 
 .. code-block:: bash
 
-	curl https://raw.githubusercontent.com/knetsolutions/KNet/master/install.sh | sh
+	curl https://raw.githubusercontent.com/knetsolutions/KNet/master/install.sh | bash
 
 This command will install the Docker, openvswitch and required packages.
-
-
-.. figure::  imgs/quick_start/prerequisites_s.png
-   :align:   center
 
 
 2. Once Prerequisties are installed. Execute the below commands to verify the docker and openvswitches are installed.
@@ -54,8 +51,6 @@ This command will install the Docker, openvswitch and required packages.
 		sudo docker images
 		sudo ovs-vsctl show
 
-.. figure::  imgs/quick_start/prereq_verification_s.png
-   :align:   center
 
 3. Install the KNet Topology Builder with below commands,
 
