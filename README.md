@@ -26,6 +26,13 @@ KNet supports the CLI and Web Interface.
 https://www.youtube.com/watch?v=SmWmbAsiimI&list=PLSO7MDepKLNCrHGrRcAyUWWUEFCOrjC4B**
 
 
+## Support / Mailing List 
+
+User can register in the below mailing list, and raise queries.
+
+www.freelists.org/list/knet
+
+
 ## Example Topologies 
 
 ![Topology Diagram](docs/imgs/topo0.png?raw=true) 
