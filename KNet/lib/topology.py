@@ -39,7 +39,7 @@ from KNet.lib.schema import Topology_schema as schema
 import KNet.lib.docker_cmds as docker
 
 UI_DATAFILE = "/tmp/data.js"
-VERSION = "1.0.11"
+VERSION = "1.0.12"
 
 
 @add_metaclass(abc.ABCMeta)
@@ -116,7 +116,14 @@ class Topology(Singleton, object):
             if "openflow" not in s:
                 if "openflow" in tdata["Topology"]:
                     s["openflow"] = tdata["Topology"]["openflow"]
-            sobj = Switch(data=s, controller=self.controller)
+
+            my_controller = None
+            if "controller" in s:
+                my_controller = s["controller"]["url"]
+            else:
+                my_controller = self.controller
+
+            sobj = Switch(data=s, controller=my_controller)
             sobj.create()
             self.switchobjs.append(sobj)
 

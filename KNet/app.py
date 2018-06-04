@@ -34,8 +34,6 @@ def knetcli():
     *    Knet Virtual Network Topology Builder -   Interactive CLI  *
     *                                                               *
     *                                                               *
-    *    Author:  KNet Solutions                                    *
-    *                                                               *
     *****************************************************************
     '''
     cli = Shell(appname="KNet-cli", symbol="#", hdr=hdr, cmdpath=cpath,

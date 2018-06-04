@@ -46,6 +46,17 @@ def set_controller(name, controller):
     utils.run_cmd(cmd)
     # exception to be handled
 
+def set_mgmt_ip(name, ips):
+    #sudo ip addr add 192.168.1.1/24 dev sdn_rtr1
+    #sudo ip link set sdn_rtr1 up
+    for ip in ips:
+        cmd = ['sudo', 'ip', 'addr','add',ip, 'dev', name]
+        utils.run_cmd(cmd)
+    cmd1 = ['sudo', 'ip', 'link','set', name, 'up']
+    utils.run_cmd(cmd1)
+    # exception to be handled
+
+
 
 def dpid(id):
     # id is a number, which can be 0 to 16 digits

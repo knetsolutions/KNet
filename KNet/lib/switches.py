@@ -30,6 +30,10 @@ class Switch(object):
           self.version = str(data["openflow"]["version"])
         else:
           self.version = None
+        if "mgmt_ips" in data:
+          self.mgmt_ips = data["mgmt_ips"]
+        else:
+          self.mgmt_ips = None
         self.controller = controller
         self.status = "initialized"
         if "datapathid" in data:
@@ -53,6 +57,9 @@ class Switch(object):
             ovs.set_controller(self.name, self.controller)
             ovs.set_protocol_version(self.name, str(self.version))
         ovs.set_datapath_id(self.name, self.datapathid)
+
+        if self.mgmt_ips:
+            ovs.set_mgmt_ip(self.name, self.mgmt_ips)          
         # Update theDB
         self.status = "created"
         utils.switch_t.update({'status': self.status}, doc_ids=[self.docid])
