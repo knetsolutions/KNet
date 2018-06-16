@@ -56,6 +56,12 @@ def set_mgmt_ip(name, ips):
     utils.run_cmd(cmd1)
     # exception to be handled
 
+def disable_inband(name):
+    #sudo ovs-vsctl set bridge br0 other-config:disable-in-band=true
+    option = 'other-config:disable-in-band=true'
+    cmd = ['sudo', 'ovs-vsctl', 'set', 'bridge', name, option]
+    utils.run_cmd(cmd)
+    # exception to be handl
 
 
 def dpid(id):

@@ -60,6 +60,7 @@ class Switch(object):
 
         if self.mgmt_ips:
             ovs.set_mgmt_ip(self.name, self.mgmt_ips)          
+        ovs.disable_inband(self.name)
         # Update theDB
         self.status = "created"
         utils.switch_t.update({'status': self.status}, doc_ids=[self.docid])
