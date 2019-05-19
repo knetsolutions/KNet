@@ -14,6 +14,10 @@ function check_ubuntu_version(){
             echo "*************************"
             echo "Your OS is UBUNTU 16.04. "
             echo "******* Installation starts ........"
+        elif [[ $os_RELEASE =~ 18.04 ]]; then
+            echo "*************************"
+            echo "Your OS is UBUNTU 18.04. "
+            echo "******* Installation starts ........"            
         else
             echo "*************************"            
             echo $os_VENDOR

@@ -3,12 +3,12 @@ from setuptools import find_packages
 
 install_requires = [
     'six==1.11.0',
-    'pyyaml==3.12',
+    'pyyaml==4.2b1',
     'ipaddress==1.0.19',
     'tinydb==3.7.0',
     'beautifultable==0.3.0',
     'logger==1.4',
-    'flask==0.12.2',
+    'flask==0.12.3',
     'jsonschema==2.6.0',
     'smallcli==0.1',
 ]
