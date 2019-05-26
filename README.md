@@ -44,14 +44,21 @@ www.freelists.org/list/knet
 
 Currently KNet is compatible with **Python 2.7** only.
 
-KNet can be installed on any Linux distributions. But we have tested only ** 16.04.**
+KNet is currently supported only in the below operating systems
+
+- Ubuntu 16.04
+- Ubuntu 18.04
+
+
+Note: It can be installed on any Linux OS ,if you customize the install script
+
 
 Minimum hardware configuration required is 4GB RAM, 2 Core processors. Higher configuration gives better result. 
 
 
 ### Prerequisites
 
-The following script installs the prerequisites in Ubuntu 16.04 system. 
+The following script installs the prerequisites in Ubuntu 16.04 or 18.04 system . 
 
 ```
 curl https://raw.githubusercontent.com/knetsolutions/KNet/master/install.sh | bash
