@@ -253,9 +253,9 @@ Todo.
 
  For the versions available, see the [tags on this repository](https://github.com/knetsolutions/KNet/tags). 
 
-## Authors
+## Author
 
-[KNet Solutions](http://knetsolutions.in)
+S. Suresh Kumar (sureshkumarr.s@gmail.com)
 
 ## License
 
