@@ -8,7 +8,7 @@ install_requires = [
     'tinydb==3.7.0',
     'beautifultable==0.3.0',
     'logger==1.4',
-    'flask==0.12.3',
+    'flask==1.1.0',
     'jsonschema==2.6.0',
     'smallcli==0.1',
 ]
