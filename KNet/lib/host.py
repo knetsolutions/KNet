@@ -28,7 +28,9 @@ class Host(object):
         self.img = data["image"]
         self.status = "initialized"
         self.interfaces = data["interfaces"]
-
+        self.mgmtif = False
+        if "mgmt-if" in data:
+            self.mgmtif = data["mgmt-if"]
         # DB Updation
         self.docid = utils.host_t.insert({'id': self.id, 'name': self.name,
                                           'img': self.img,
@@ -38,7 +40,14 @@ class Host(object):
 
     def create(self):
         # sudo docker run -itd --name=node1  ubuntu:trusty
-        self.uuid = docker.create_container(self.name, self.img)
+        #self.uuid = docker.create_container(self.name, self.img)
+
+        if self.mgmtif is True:
+            self.uuid = docker.create_container(self.name, self.img,
+                                                net="bridge")
+        else:
+            self.uuid = docker.create_container(self.name, self.img)
+
         self.status = "created"
         # update the status in DB
         utils.host_t.update({'status': self.status}, doc_ids=[self.docid])
