@@ -39,7 +39,7 @@ from KNet.lib.schema import Topology_schema as schema
 import KNet.lib.docker_cmds as docker
 
 UI_DATAFILE = "/tmp/data.js"
-VERSION = "1.0.17"
+VERSION = "1.0.18"
 
 
 @add_metaclass(abc.ABCMeta)

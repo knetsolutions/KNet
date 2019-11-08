@@ -17,12 +17,14 @@ import KNet.lib.utils as utils
 import os
 from KNet.lib.logger import logger as log
 
-def create_container(name, img, net="none"):
+def create_container(name, img, net="none", cpu="0.1", mem="100m"):
     # sudo docker run -itd --name=node1  ubuntu:trusty
     n = "--name=" + name
     network = "--network=" + net
     hostname = "--hostname=" + name
-    cmd = ['sudo', 'docker', 'run', '--cap-add=NET_ADMIN', '--privileged',
+    cpus = "--cpus=" + cpu
+    memory = "--memory=" + mem
+    cmd = ['sudo', 'docker', 'run', cpus, memory, '--cap-add=NET_ADMIN', '--privileged',
            '-itd', hostname,  n, network, img]
     return utils.run_cmd(cmd)
 
