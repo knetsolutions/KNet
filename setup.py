@@ -17,7 +17,7 @@ test_requires = []
 
 setup(
     name='KNet',
-    version='1.0.18',
+    version='1.0.18b',
     description="Virtual Network Topology Builder",
     author="KNet Solutions",
     author_email="knetsolutions2@gmail.com",

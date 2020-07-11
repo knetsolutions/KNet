@@ -180,7 +180,7 @@ class HostLink(object):
 class ServerLink(object):
     def __init__(self, data, qos=None):
         # self.network = network
-        log.debug("ServerLink Object init" + str(data))
+        log.info("ServerLink Object init" + str(data))
         self.qos = qos
         self.switch = data["switches"][0]
         self.servers = data["servers"]
@@ -207,7 +207,7 @@ class ServerLink(object):
 
     def create(self):
         for server in self.servers:
-            log.debug("Creating ServerLink" + str(server))
+            log.info("Creating ServerLink" + str(server))
             r = utils.get_server_data(server['name'])
 
             ip, mac = self.__getip(r['interfaces'], server["interface"])
