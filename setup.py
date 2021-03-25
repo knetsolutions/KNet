@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 install_requires = [
     'six==1.11.0',
-    'pyyaml==4.2b1',
+    'pyyaml==5.4',
     'ipaddress==1.0.19',
     'tinydb==3.7.0',
     'beautifultable==0.3.0',
